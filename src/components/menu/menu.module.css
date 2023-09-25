@@ -1,0 +1,16 @@
+.menu {
+  display: flex;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  margin-left: -16px;
+  flex-basis: 35%;
+}
+
+.menuItem {
+  margin-right: 8px;
+}
+
+.menuItem:last-child {
+  margin-right: 0;
+}
