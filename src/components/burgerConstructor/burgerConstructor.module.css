@@ -1,0 +1,35 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding-left: 16px;
+  flex-basis: 50%;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 40px;
+  padding: 0 20px;
+}
+
+.price {
+  display: flex;
+  align-items: center;
+  margin-right: 40px;
+}
+
+.ingredients {
+  height: calc(100vh - 500px);
+  overflow: scroll;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 20px 0 0;
+}
+
+.ingredientWrapper {
+  display: flex;
+  align-items: center;
+}
