@@ -1,24 +1,24 @@
 import React from 'react';
 import BurgerIngredients from '../burgerIngredients/burgerIngredients';
 import BurgerConstructor from '../burgerConstructor/burgerConstructor';
+import PropTypes from 'prop-types';
+import mainBlockStyles from './mainBlock.module.css';
+import { ingredientPropTypes } from '../../utils/types';
 
-class MainBlock extends React.Component {
-  constructor(props) {
-    super();
-    this.state = { data: props.data };
-  }
-
-  render() {
-    return (
-      <div>
-        <h1>Соберите бургер</h1>
-        <div style={{ display: 'flex', gap: '10px', justifyContent: 'space-between' }}>
-          <BurgerIngredients data={this.state.data} />
-          <BurgerConstructor data={this.state.data} />
-        </div>
+function MainBlock({ data }) {
+  return (
+    <div>
+      <h1>Соберите бургер</h1>
+      <div className={mainBlockStyles.wrapper}>
+        <BurgerIngredients data={data} />
+        <BurgerConstructor data={data} />
       </div>
-    );
-  }
+    </div>
+  );
 }
+
+MainBlock.propTypes = {
+  data: PropTypes.arrayOf(ingredientPropTypes),
+};
 
 export default MainBlock;

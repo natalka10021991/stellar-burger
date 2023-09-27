@@ -1,9 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-class Button extends React.Component {
-  render() {
-    return <button className="primary-button">{this.props.text}</button>;
-  }
+function Button({ text }) {
+  return <button className='primary-button'>{text}</button>;
 }
+
+Button.propTypes = {
+  text: PropTypes.string.isRequired,
+};
 
 export default Button;

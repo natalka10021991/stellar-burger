@@ -13,22 +13,20 @@ const menuItems = [
   },
 ];
 
-class Menu extends React.Component {
-  render() {
-    return (
-      <nav>
-        <ul className={menuStyles.menu}>
-          {menuItems.map((item, i) => {
-            return (
-              <li className={menuStyles.menuItem} key={i}>
-                <MenuButton text={item.text} icon={item.icon} />
-              </li>
-            );
-          })}
-        </ul>
-      </nav>
-    );
-  }
+function Menu() {
+  return (
+    <nav>
+      <ul className={menuStyles.menu}>
+        {menuItems.map((item, i) => {
+          return (
+            <li className={menuStyles.menuItem} key={i}>
+              <MenuButton text={item.text} icon={item.icon} />
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
+  );
 }
 
 export default Menu;
