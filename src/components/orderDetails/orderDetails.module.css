@@ -1,0 +1,21 @@
+.wrapper {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  text-shadow: 0px 4px 32px rgba(51, 51, 255, 0.5), 0px 0px 8px rgba(51, 51, 255, 0.25),
+    0px 0px 16px rgba(51, 51, 255, 0.25);
+}
+
+.icon {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(51, 51, 255, 0.2);
+}
