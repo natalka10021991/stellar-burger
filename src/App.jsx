@@ -11,8 +11,15 @@ function App() {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(DATA_URL)
-      .then((res) => res.json())
+    let promise = fetch(DATA_URL);
+    promise
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          console.log(res.status, 'ошибка запроса');
+        }
+      })
       .then((data) => {
         setIsLoading(false);
         setData(data.data);

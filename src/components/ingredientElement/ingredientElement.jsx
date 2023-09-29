@@ -3,6 +3,7 @@ import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-c
 import { ingredientPropTypes } from '../../utils/types';
 import ingredientElementStyle from './ingredientElement.module.css';
 import IngredientDetails from '../ingredientDetails/ingredientDetails';
+import Modal from '../modal/modal';
 
 function IngredientElement({ data }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,15 +12,12 @@ function IngredientElement({ data }) {
     setIsOpen(true);
   };
 
-  const handleKeyDown = (e) => {
-    if (e.code === 'Escape') {
-      setIsOpen(false);
-    }
-  }
-
   return (
     <>
-      <div className={ingredientElementStyle.element} onClick={handleClick} onKeyDown={handleKeyDown} tabIndex="0">
+      <div
+        className={ingredientElementStyle.element}
+        onClick={handleClick}
+      >
         <Counter count={1} size='default' extraClass='m-1' />
         <img src={data.image} alt={data.name} />
         <p className={`${ingredientElementStyle.price} text text_type_digits-default mt-1 mb-1`}>
@@ -28,13 +26,17 @@ function IngredientElement({ data }) {
         </p>
         <p className='text text_type_main-small'>{data.name}</p>
       </div>
-      {isOpen && <IngredientDetails title={'Детали ингредиента'} ingredient={data} setIsOpen={setIsOpen} />}
+      {isOpen && (
+        <Modal title={'Детали ингредиента'} setIsOpen={setIsOpen}>
+          <IngredientDetails ingredient={data} />
+        </Modal>
+      )}
     </>
   );
 }
 
 IngredientElement.propTypes = {
-  data: ingredientPropTypes,
+  data: ingredientPropTypes.isRequired,
 };
 
 export default IngredientElement;

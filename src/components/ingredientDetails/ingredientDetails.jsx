@@ -1,15 +1,10 @@
-import { createPortal } from 'react-dom';
-import ModalOverlay from '../modalOverlay/modalOverlay';
-import PropTypes from 'prop-types';
 import { ingredientPropTypes } from '../../utils/types';
 
 import ingredientDetailsStyles from './ingredientDetails.module.css';
 
-const modalRoot = document.getElementById('modals');
-
-function IngredientDetails({ title, ingredient, setIsOpen }) {
-  return createPortal(
-    <ModalOverlay title={title} setIsOpen={setIsOpen}>
+function IngredientDetails({ ingredient }) {
+  return (
+    <div>
       <img src={ingredient.image} alt={ingredient.name} className='mb-4' />
       <p className='text text_type_main-medium mb-8'>{ingredient.name}</p>
       <div className={ingredientDetailsStyles.info}>
@@ -34,15 +29,12 @@ function IngredientDetails({ title, ingredient, setIsOpen }) {
           <span>{ingredient.carbohydrates}</span>
         </p>
       </div>
-    </ModalOverlay>,
-    modalRoot
+    </div>
   );
 }
 
 IngredientDetails.propTypes = {
-  title: PropTypes.string,
-  ingredient: ingredientPropTypes,
-  setIsOpen: PropTypes.func
+  ingredient: ingredientPropTypes.isRequired,
 };
 
 export default IngredientDetails;

@@ -21,21 +21,21 @@ function BurgerIngredients({ data }) {
         <Tab
           value='bun'
           active={state.current === 'bun'}
-          onClick={() => setState({ current: 'bun' })}
+          onClick={() => setState({...state, current: 'bun' })}
         >
           Булки
         </Tab>
         <Tab
           value='sauce'
           active={state.current === 'sauce'}
-          onClick={() => setState({ current: 'sauce' })}
+          onClick={() => setState({...state, current: 'sauce' })}
         >
           Соусы
         </Tab>
         <Tab
           value='main'
           active={state.current === 'main'}
-          onClick={() => setState({ current: 'main' })}
+          onClick={() => setState({...state, current: 'main' })}
         >
           Начинки
         </Tab>
@@ -73,7 +73,7 @@ function BurgerIngredients({ data }) {
 }
 
 BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(ingredientPropTypes),
+  data: PropTypes.arrayOf(ingredientPropTypes).isRequired,
 };
 
 export default BurgerIngredients;

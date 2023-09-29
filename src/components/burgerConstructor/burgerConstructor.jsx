@@ -5,6 +5,7 @@ import {
   Button,
   DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import Modal from '../modal/modal';
 import PropTypes from 'prop-types';
 import { ingredientPropTypes } from '../../utils/types';
 
@@ -67,13 +68,17 @@ function BurgerConstructor({ data }) {
           </Button>
         </div>
       </div>
-      {isModalOpen && <OrderDetails setIsOpen={setIsModalOpen} />}
+      {isModalOpen && (
+        <Modal title='' setIsOpen={setIsModalOpen}>
+          <OrderDetails />
+        </Modal>
+      )}
     </>
   );
 }
 
 BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(ingredientPropTypes),
+  data: PropTypes.arrayOf(ingredientPropTypes).isRequired,
 };
 
 export default BurgerConstructor;
