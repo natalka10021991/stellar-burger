@@ -1,4 +1,20 @@
+
 .wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.ingredients {
+  height: calc(100vh - 500px);
+  overflow: scroll;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 20px 0 0;
+}
+
+.ingredientsWrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -18,15 +34,6 @@
   display: flex;
   align-items: center;
   margin-right: 40px;
-}
-
-.ingredients {
-  height: calc(100vh - 500px);
-  overflow: scroll;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 0 20px 0 0;
 }
 
 .ingredientWrapper {

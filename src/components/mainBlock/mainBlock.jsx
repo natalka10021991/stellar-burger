@@ -1,24 +1,36 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import BurgerIngredients from '../burgerIngredients/burgerIngredients';
 import BurgerConstructor from '../burgerConstructor/burgerConstructor';
-import PropTypes from 'prop-types';
 import mainBlockStyles from './mainBlock.module.css';
-import { ingredientPropTypes } from '../../utils/types';
+import { ADD_INGREDIENT } from '../../services/actions/burgerConstructor';
 
-function MainBlock({ data }) {
+function MainBlock() {
+  const dispatch = useDispatch();
+  const burgerIngredients = useSelector((store) => store.burgerIngredients.burgerIngredients);
+  const draggedElements = useSelector((store) => store.burgerConstructor.draggedIngredients);
+
+  const handleDrop = (element) => {
+    dispatch({
+      type: ADD_INGREDIENT,
+      ingredient: { ...element, id: Math.random() },
+      ingredients: burgerIngredients,
+    });
+  };
+
   return (
     <div>
       <h1>Соберите бургер</h1>
-      <div className={mainBlockStyles.wrapper}>
-        <BurgerIngredients data={data} />
-        <BurgerConstructor data={data} />
-      </div>
+      <DndProvider backend={HTML5Backend}>
+        <div className={mainBlockStyles.wrapper}>
+          <BurgerIngredients />
+          <BurgerConstructor elements={draggedElements} onDropHandler={handleDrop} />
+        </div>
+      </DndProvider>
     </div>
   );
 }
-
-MainBlock.propTypes = {
-  data: PropTypes.arrayOf(ingredientPropTypes).isRequired,
-};
 
 export default MainBlock;

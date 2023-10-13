@@ -1,65 +1,128 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import update from 'immutability-helper';
+
+import { useSelector, useDispatch } from 'react-redux';
 import {
   ConstructorElement,
   CurrencyIcon,
   Button,
-  DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
-import PropTypes from 'prop-types';
-import { ingredientPropTypes } from '../../utils/types';
 
 import burgerConstructorStyles from './burgerConstructor.module.css';
 import OrderDetails from '../orderDetails/orderDetails';
+import { useDrop } from 'react-dnd';
+import { createOrder } from '../../services/actions/orderDetails';
+import BurgerConstructorInner from '../burgerConstructorInner/burgerConstructorInner';
 
-function BurgerConstructor({ data }) {
+function BurgerConstructor({ elements, onDropHandler }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [bun, setBun] = useState({});
+  const [elementsWithoutBun, setElementsWithoutBun] = useState({});
+  const [price, setPrice] = useState(null);
+  const draggedElements = useSelector((store) => store.burgerConstructor.draggedIngredients);
+  const orderNumber = useSelector((store) => store.createOrder.orderDetails.order.number);
+  const dispatch = useDispatch();
 
   const handleClick = () => {
+    dispatch(createOrder(draggedElements.map((item) => item._id)));
     setIsModalOpen(true);
   };
 
+  const [, dropTarget] = useDrop({
+    accept: 'burgerIngredient',
+    drop(item) {
+      onDropHandler(item);
+    },
+  });
+
+  const findCard = useCallback(
+    (id) => {
+      const card = elementsWithoutBun.filter((c) => `${c.id}` === id)[0];
+      return {
+        card,
+        index: elementsWithoutBun.indexOf(card),
+      };
+    },
+    [elementsWithoutBun]
+  );
+
+  const moveCard = useCallback(
+    (id, atIndex) => {
+      const { card, index } = findCard(id);
+      setElementsWithoutBun(
+        update(elementsWithoutBun, {
+          $splice: [
+            [index, 1],
+            [atIndex, 0, card],
+          ],
+        })
+      );
+    },
+    [findCard, elementsWithoutBun, setElementsWithoutBun]
+  );
+
+  const [, drop] = useDrop(() => ({ accept: 'burgerConstructorElement' }));
+
+  useEffect(() => {
+    setBun(elements.find((item) => item.type === 'bun'));
+    setElementsWithoutBun(elements.filter((item) => item.type !== 'bun'));
+  }, [elements]);
+
+  useEffect(() => {
+    setPrice(
+      draggedElements.reduce((sum, current) => {
+        if (current.type === 'bun') return sum + current.price * 2;
+        return sum + current.price;
+      }, 0)
+    );
+  }, [draggedElements]);
+
   return (
     <>
-      <div>
-        <div className={burgerConstructorStyles.wrapper}>
-          <ConstructorElement
-            type='top'
-            isLocked
-            text='Краторная булка N-200i (верх)'
-            price='20'
-            thumbnail='https://code.s3.yandex.net/react/code/bun-02.png'
-            extraClass=''
-          />
-          <div className={burgerConstructorStyles.ingredients}>
-            {data.map((item) => {
-              return (
-                <div className={burgerConstructorStyles.ingredientWrapper} key={item._id}>
-                  <DragIcon type='primary' />
-                  <ConstructorElement
-                    isLocked={false}
-                    text={item.name}
-                    price={item.price}
-                    thumbnail={item.image}
+      <div className={burgerConstructorStyles.wrapper}>
+        <div className={burgerConstructorStyles.ingredientsWrapper} ref={dropTarget}>
+          {elements && elements.length ? (
+            <>
+              {bun && (
+                <ConstructorElement
+                  type='top'
+                  isLocked
+                  text={bun.name}
+                  price={bun.price}
+                  thumbnail={bun.image}
+                  extraClass=''
+                />
+              )}
+              <div className={burgerConstructorStyles.ingredients} ref={drop}>
+                {elementsWithoutBun.map((item, index) => (
+                  <BurgerConstructorInner
+                    item={item}
                     key={item.id}
-                    extraClass='ml-2'
+                    id={`${item.id}`}
+                    moveCard={moveCard}
+                    findCard={findCard}
                   />
-                </div>
-              );
-            })}
-          </div>
-          <ConstructorElement
-            type='bottom'
-            isLocked
-            text='Краторная булка N-200i (низ)'
-            price='20'
-            thumbnail='https://code.s3.yandex.net/react/code/bun-02.png'
-            extraClass=''
-          />
+                ))}
+              </div>
+              {bun && (
+                <ConstructorElement
+                  type='bottom'
+                  isLocked
+                  text={bun.name}
+                  price={bun.price}
+                  thumbnail={bun.image}
+                  extraClass=''
+                />
+              )}
+            </>
+          ) : (
+            <h2>Добавьте ингредиенты в ваш бургер</h2>
+          )}
         </div>
         <div className={burgerConstructorStyles.footer}>
           <div className={burgerConstructorStyles.price}>
-            <p className='text text_type_digits-medium mr-1'>610 </p>
+            <p className='text text_type_digits-medium mr-1'>{price} </p>
 
             <CurrencyIcon type='primary' />
           </div>
@@ -68,7 +131,8 @@ function BurgerConstructor({ data }) {
           </Button>
         </div>
       </div>
-      {isModalOpen && (
+
+      {isModalOpen && !!orderNumber && (
         <Modal title='' setIsOpen={setIsModalOpen}>
           <OrderDetails />
         </Modal>
@@ -76,9 +140,5 @@ function BurgerConstructor({ data }) {
     </>
   );
 }
-
-BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(ingredientPropTypes).isRequired,
-};
 
 export default BurgerConstructor;

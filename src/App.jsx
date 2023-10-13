@@ -1,42 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import AppHeader from './components/appHeader/appHeader';
 import MainBlock from './components/mainBlock/mainBlock';
-
-const DATA_URL = 'https://norma.nomoreparties.space/api/ingredients';
+import { getBurderIngredients } from './services/actions/burgerIngredients';
+import { useSelector, useDispatch } from 'react-redux';
 
 function App() {
-  const [data, setData] = useState();
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const {burgerIngredients, burgerIngredientsRequest, burgerIngredientsFailed } = useSelector(store => store.burgerIngredients)
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    setIsLoading(true);
-    let promise = fetch(DATA_URL);
-    promise
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        } else {
-          console.log(res.status, 'ошибка запроса');
-        }
-      })
-      .then((data) => {
-        setIsLoading(false);
-        setData(data.data);
-      })
-      .catch((e) => setError(e));
+    dispatch(getBurderIngredients())
   }, []);
 
   return (
     <div className='App'>
-      {data && (
+      {burgerIngredients && burgerIngredients.length && (
         <div className='appWrapper'>
           <AppHeader />
-          <MainBlock data={data} />
+          <MainBlock/>
         </div>
       )}
-      {isLoading && <p>Данные загружаются</p>}
-      {error && <h2>Ошибна на сервере {error}</h2>}
+      {burgerIngredientsRequest && <p>Данные загружаются</p>}
+      {burgerIngredientsFailed && <h2>Ошибна на сервере</h2>}
     </div>
   );
 }
