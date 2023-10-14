@@ -16,9 +16,7 @@ declare global {
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const enhancer = composeEnhancers();
-
-const store = createStore(rootReducer, applyMiddleware(thunk));
+const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 

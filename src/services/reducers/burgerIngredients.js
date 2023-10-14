@@ -21,6 +21,7 @@ export const burgerIngredientsReducer = (state = initialState, action) => {
     case GET_BURGER_INGREDIENTS_FAILED: {
       return {
         ...state,
+        burgerIngredients: [],
         burgerIngredientsRequest: false,
         burgerIngredientsFailed: true
       }

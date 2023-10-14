@@ -6,11 +6,12 @@ import BurgerIngredients from '../burgerIngredients/burgerIngredients';
 import BurgerConstructor from '../burgerConstructor/burgerConstructor';
 import mainBlockStyles from './mainBlock.module.css';
 import { ADD_INGREDIENT } from '../../services/actions/burgerConstructor';
+import { getBurgerIngredients, getDraggedElements } from '../../services/utils';
 
 function MainBlock() {
   const dispatch = useDispatch();
-  const burgerIngredients = useSelector((store) => store.burgerIngredients.burgerIngredients);
-  const draggedElements = useSelector((store) => store.burgerConstructor.draggedIngredients);
+  const burgerIngredients = useSelector(getBurgerIngredients);
+  const draggedElements = useSelector(getDraggedElements);
 
   const handleDrop = (element) => {
     dispatch({

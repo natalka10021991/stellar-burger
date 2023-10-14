@@ -8,17 +8,15 @@ export const createOrder = (ingredients) => {
   return function (dispatch) {
     dispatch({ type: CREATE_ORDER_REQUEST });
     const payload = {
-      ingredients: ingredients
-    }
-    let promise = fetch(CREATE_ORDER_URL, {
+      ingredients: ingredients,
+    };
+    fetch(CREATE_ORDER_URL, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json;charset=utf-8'
+        'Content-Type': 'application/json;charset=utf-8',
       },
       body: JSON.stringify(payload),
-    });
-
-    promise
+    })
       .then((res) => {
         if (res && res.ok) {
           return res.json();

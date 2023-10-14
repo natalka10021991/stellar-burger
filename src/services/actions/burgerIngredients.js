@@ -7,24 +7,26 @@ const DATA_URL = 'https://norma.nomoreparties.space/api/ingredients';
 export const getBurderIngredients = () => {
   return function (dispatch) {
     dispatch({ type: GET_BURGER_INGREDIENTS });
-    let promise = fetch(DATA_URL);
-    promise.then((res) => {
-      if (res && res.ok) {
-        return res.json()
-      } else {
+    fetch(DATA_URL)
+      .then((res) => {
+        if (res && res.ok) {
+          return res.json();
+        } else {
+          dispatch({
+            type: GET_BURGER_INGREDIENTS_FAILED,
+          });
+        }
+      })
+      .then((data) => {
+        dispatch({
+          type: GET_BURGER_INGREDIENTS_SUCCESS,
+          burgerIngredients: data.data,
+        });
+      })
+      .catch((e) => {
         dispatch({
           type: GET_BURGER_INGREDIENTS_FAILED,
         });
-      }
-    }).then((data) => {
-      dispatch({
-        type: GET_BURGER_INGREDIENTS_SUCCESS,
-        burgerIngredients: data.data,
       });
-    }).catch((e) => {
-      dispatch({
-        type: GET_BURGER_INGREDIENTS_FAILED,
-      });
-    })
   };
 };

@@ -6,10 +6,11 @@ import ingredientElementStyle from './ingredientElement.module.css';
 import IngredientDetails from '../ingredientDetails/ingredientDetails';
 import Modal from '../modal/modal';
 import { useDrag } from 'react-dnd';
+import { getDraggedElements } from '../../services/utils';
 
 function IngredientElement({ data }) {
   const [isOpen, setIsOpen] = useState(false);
-  const draggedElements = useSelector((store) => store.burgerConstructor.draggedIngredients);
+  const draggedElements = useSelector(getDraggedElements);
   const counter = draggedElements.filter((item) => item._id === data._id).length;
   const handleClick = () => {
     setIsOpen(true);

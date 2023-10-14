@@ -14,13 +14,14 @@ import OrderDetails from '../orderDetails/orderDetails';
 import { useDrop } from 'react-dnd';
 import { createOrder } from '../../services/actions/orderDetails';
 import BurgerConstructorInner from '../burgerConstructorInner/burgerConstructorInner';
+import { getDraggedElements } from '../../services/utils';
 
 function BurgerConstructor({ elements, onDropHandler }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bun, setBun] = useState({});
   const [elementsWithoutBun, setElementsWithoutBun] = useState({});
   const [price, setPrice] = useState(null);
-  const draggedElements = useSelector((store) => store.burgerConstructor.draggedIngredients);
+  const draggedElements = useSelector(getDraggedElements);
   const orderNumber = useSelector((store) => store.createOrder.orderDetails.order.number);
   const dispatch = useDispatch();
 

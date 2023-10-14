@@ -42,6 +42,12 @@ export const createOrderReducer = (state = initialState, action) => {
         ...state,
         createOrderRequest: false,
         createOrderFailed: true,
+        orderDetails: {
+          name: '',
+          order: {
+            number: '',
+          },
+        },
       };
     }
     default: {

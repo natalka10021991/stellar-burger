@@ -4,6 +4,7 @@ import { useInView } from 'react-intersection-observer';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientElement from '../ingredientElement/ingredientElement';
 import burgerIngredientsStyles from './burgerIngredients.module.css';
+import { getBurgerIngredients } from '../../services/utils';
 
 function BurgerIngredients() {
   const [refBun, inViewBun] = useInView();
@@ -15,7 +16,7 @@ function BurgerIngredients() {
     [inViewBun, inViewSauce, inViewMain]
   );
 
-  const burgerIngredients = useSelector((store) => store.burgerIngredients.burgerIngredients);
+  const burgerIngredients = useSelector(getBurgerIngredients);
   const [state, setState] = useState('bun');
 
   const getType = (type) => {
