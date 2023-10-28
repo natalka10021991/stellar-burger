@@ -6,10 +6,12 @@ const menuItems = [
   {
     icon: 'burger',
     text: 'Конструктор',
+    link: '/',
   },
   {
     icon: 'list',
     text: 'Лента заказов',
+    link: '/orders',
   },
 ];
 
@@ -20,7 +22,7 @@ function Menu() {
         {menuItems.map((item, i) => {
           return (
             <li className={menuStyles.menuItem} key={i}>
-              <MenuButton text={item.text} icon={item.icon} />
+              <MenuButton text={item.text} icon={item.icon} link={item.link} />
             </li>
           );
         })}

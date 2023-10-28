@@ -11,7 +11,7 @@ function AppHeader() {
     <header className={`${styles.header} pl-0 pr-0 pb-4 pt-4`}>
       <Menu />
       <Logo />
-      <MenuButton className={styles.menuButton} text={'Личный кабинет'} icon={'profile'} />
+      <MenuButton className={styles.menuButton} text={'Личный кабинет'} icon={'profile'} link={'/profile'} />
     </header>
   );
 }

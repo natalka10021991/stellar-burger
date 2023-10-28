@@ -1,10 +1,20 @@
+import { useParams } from 'react-router-dom';
 import { ingredientPropTypes } from '../../utils/types';
-
+import { useSelector } from 'react-redux';
+import { getBurgerIngredients } from '../../services/utils';
 import ingredientDetailsStyles from './ingredientDetails.module.css';
 
-function IngredientDetails({ ingredient }) {
+function IngredientDetails() {
+  let { id } = useParams();
+  const burgerIngredients = useSelector(getBurgerIngredients);
+  const getIngredientById = (id) => {
+    return burgerIngredients.find((ingredient) => ingredient._id === id);
+  };
+  let ingredient = getIngredientById(id);
+
+  if (!ingredient) return null;
   return (
-    <div>
+    <>
       <img src={ingredient.image} alt={ingredient.name} className='mb-4' />
       <p className='text text_type_main-medium mb-8'>{ingredient.name}</p>
       <div className={ingredientDetailsStyles.info}>
@@ -29,12 +39,8 @@ function IngredientDetails({ ingredient }) {
           <span>{ingredient.carbohydrates}</span>
         </p>
       </div>
-    </div>
+    </>
   );
 }
-
-IngredientDetails.propTypes = {
-  ingredient: ingredientPropTypes.isRequired,
-};
 
 export default IngredientDetails;

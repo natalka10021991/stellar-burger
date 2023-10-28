@@ -12,24 +12,29 @@ import Modal from '../modal/modal';
 import burgerConstructorStyles from './burgerConstructor.module.css';
 import OrderDetails from '../orderDetails/orderDetails';
 import { useDrop } from 'react-dnd';
-import { createOrder } from '../../services/actions/orderDetails';
+import { createOrder } from '../../services/store/orderDetails';
 import BurgerConstructorInner from '../burgerConstructorInner/burgerConstructorInner';
 import { getDraggedElements } from '../../services/utils';
+import { useNavigate } from 'react-router-dom';
 
 function BurgerConstructor({ elements, onDropHandler }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bun, setBun] = useState({});
-  const [elementsWithoutBun, setElementsWithoutBun] = useState({});
+  const [elementsWithoutBun, setElementsWithoutBun] = useState([]);
   const [price, setPrice] = useState(null);
   const draggedElements = useSelector(getDraggedElements);
   const orderNumber = useSelector((store) => store.createOrder.orderDetails.order.number);
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
+  const user = useSelector((store) => store.getUser);
   const handleClick = () => {
-    dispatch(createOrder(draggedElements.map((item) => item._id)));
-    setIsModalOpen(true);
+    if (!user.user.email) {
+      navigate('/login');
+    } else {
+      dispatch(createOrder(draggedElements.map((item) => item._id)));
+      setIsModalOpen(true);
+    }
   };
-
   const [, dropTarget] = useDrop({
     accept: 'burgerIngredient',
     drop(item) {
@@ -78,12 +83,11 @@ function BurgerConstructor({ elements, onDropHandler }) {
       }, 0)
     );
   }, [draggedElements]);
-
   return (
     <>
       <div className={burgerConstructorStyles.wrapper}>
         <div className={burgerConstructorStyles.ingredientsWrapper} ref={dropTarget}>
-          {elements && elements.length ? (
+          {elements && elements.length && elementsWithoutBun ? (
             <>
               {bun && (
                 <ConstructorElement

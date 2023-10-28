@@ -2,8 +2,8 @@ import { useDispatch } from 'react-redux';
 import { useDrop, useDrag } from 'react-dnd';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import { REMOVE_INGREDIENT } from '../../services/actions/burgerConstructor';
 import burgerConstructorInnerStyles from './burgerConstructorInner.module.css';
+import { removeIngredient } from '../../services/store/burgerConstructor';
 
 function BurgerConstructorInner({ item, id, moveCard, findCard }) {
   const originalIndex = findCard(id).index;
@@ -44,7 +44,7 @@ function BurgerConstructorInner({ item, id, moveCard, findCard }) {
   const dispatch = useDispatch();
 
   const handleClose = (id) => {
-    dispatch({ type: REMOVE_INGREDIENT, id: id });
+    dispatch(removeIngredient(id));
   };
 
   return (

@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useInView } from 'react-intersection-observer';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientElement from '../ingredientElement/ingredientElement';
 import burgerIngredientsStyles from './burgerIngredients.module.css';
 import { getBurgerIngredients } from '../../services/utils';
+import { Outlet } from 'react-router-dom';
 
 function BurgerIngredients() {
   const [refBun, inViewBun] = useInView();
   const [refSauce, inViewSauce] = useInView();
   const [refMain, inViewMain] = useInView();
+
   useEffect(
     () => setState(inViewBun ? 'bun' : inViewSauce ? 'sauce' : inViewMain ? 'main' : 'main'),
 
@@ -71,6 +73,7 @@ function BurgerIngredients() {
             })}
           </div>
         </div>
+        <Outlet />
       </div>
     </div>
   );

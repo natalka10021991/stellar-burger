@@ -1,20 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ingredientPropTypes } from '../../utils/types';
 import ingredientElementStyle from './ingredientElement.module.css';
-import IngredientDetails from '../ingredientDetails/ingredientDetails';
-import Modal from '../modal/modal';
 import { useDrag } from 'react-dnd';
 import { getDraggedElements } from '../../services/utils';
+import { Link, useLocation } from 'react-router-dom';
 
 function IngredientElement({ data }) {
-  const [isOpen, setIsOpen] = useState(false);
+  let location = useLocation();
   const draggedElements = useSelector(getDraggedElements);
   const counter = draggedElements.filter((item) => item._id === data._id).length;
-  const handleClick = () => {
-    setIsOpen(true);
-  };
+
 
   const [{ isDrag }, dragRef] = useDrag({
     type: 'burgerIngredient',
@@ -25,10 +22,10 @@ function IngredientElement({ data }) {
   });
 
   return (
-    <>
+    <Link to={`ingredients/${data._id}`} state={{ backgroundLocation: location }} className={`${ingredientElementStyle.link} text text_type_main-medium`}>
       <div
         className={ingredientElementStyle.element}
-        onClick={handleClick}
+        
         ref={dragRef}
         style={{ border: isDrag ? '1px solid #4C4CFF' : '' }}
       >
@@ -41,12 +38,7 @@ function IngredientElement({ data }) {
         </p>
         <p className='text text_type_main-small'>{data.name}</p>
       </div>
-      {isOpen && (
-        <Modal title={'Детали ингредиента'} setIsOpen={setIsOpen}>
-          <IngredientDetails ingredient={data} />
-        </Modal>
-      )}
-    </>
+    </Link>
   );
 }
 

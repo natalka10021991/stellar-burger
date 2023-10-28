@@ -7,7 +7,6 @@ import ModalOverlay from '../modalOverlay/modalOverlay';
 
 function Modal({ title, children, setIsOpen }) {
   const modalRoot = document.getElementById('modals');
-
   const closeModal = () => {
     setIsOpen(false);
   };
@@ -49,7 +48,7 @@ function Modal({ title, children, setIsOpen }) {
 Modal.propTypes = {
   title: PropTypes.string,
   children: PropTypes.node.isRequired,
-  setIsOpen: PropTypes.func.isRequired,
+  // setIsOpen: PropTypes.func.isRequired,
 };
 
 export default Modal;
