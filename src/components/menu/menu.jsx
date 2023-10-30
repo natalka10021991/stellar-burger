@@ -1,6 +1,6 @@
 import React from 'react';
-import MenuButton from '../menuButton/menuButton';
-import menuStyles from './menu.module.css';
+import MenuButton from '../MenuButton/MenuButton';
+import menuStyles from './Menu.module.css';
 
 const menuItems = [
   {

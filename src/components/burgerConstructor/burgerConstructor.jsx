@@ -7,13 +7,13 @@ import {
   CurrencyIcon,
   Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import Modal from '../modal/modal';
+import Modal from '../Modal/Modal';
 
-import burgerConstructorStyles from './burgerConstructor.module.css';
-import OrderDetails from '../orderDetails/orderDetails';
+import burgerConstructorStyles from './BurgerConstructor.module.css';
+import OrderDetails from '../OrderDetails/OrderDetails';
 import { useDrop } from 'react-dnd';
 import { createOrder } from '../../services/store/orderDetails';
-import BurgerConstructorInner from '../burgerConstructorInner/burgerConstructorInner';
+import BurgerConstructorInner from '../BurgerConstructorInner/BurgerConstructorInner';
 import { getDraggedElements } from '../../services/utils';
 import { useNavigate } from 'react-router-dom';
 
@@ -93,7 +93,7 @@ function BurgerConstructor({ elements, onDropHandler }) {
                 <ConstructorElement
                   type='top'
                   isLocked
-                  text={bun.name}
+                  text={`${bun.name} (верх)`}
                   price={bun.price}
                   thumbnail={bun.image}
                   extraClass=''
@@ -114,7 +114,7 @@ function BurgerConstructor({ elements, onDropHandler }) {
                 <ConstructorElement
                   type='bottom'
                   isLocked
-                  text={bun.name}
+                  text={`${bun.name} (низ)`}
                   price={bun.price}
                   thumbnail={bun.image}
                   extraClass=''

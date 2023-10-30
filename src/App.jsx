@@ -1,20 +1,23 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
-import Home from './pages/home';
-import Login from './pages/login';
-import Register from './pages/register';
-import ForgotPassword from './pages/forgotPassword';
-import ResetPassword from './pages/resetPassword';
-import Profile from './pages/profile';
-import { ProtectedRouteElement } from './components/protectedRouteElement/protectedRouteElement';
-import Orders from './pages/orders';
-import Element from './pages/element';
-import Modal from './components/modal/modal';
-import IngredientDetails from './components/ingredientDetails/ingredientDetails';
+import { useSelector, useDispatch } from 'react-redux';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
+import Profile from './pages/Profile';
+import { ProtectedRouteElement } from './components/ProtectedRouteElement/ProtectedRouteElement';
+import Orders from './pages/Orders';
+import Element from './pages/Element';
+import Modal from './components/Modal/Modal';
+import IngredientDetails from './components/IngredientDetails/IngredientDetails';
+import AppHeader from './components/AppHeader/AppHeader';
+import { getBurgerIngredients } from './services/store/burgerIngredients';
 
 function App() {
-  let location = useLocation();
-  let state = location.state;
+  const location = useLocation();
+  const state = location.state;
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -23,8 +26,14 @@ function App() {
     }
   }, [location]);
 
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getBurgerIngredients());
+  }, []);
+
   return (
     <div className='app'>
+      <AppHeader />
       <Routes location={state?.backgroundLocation || location}>
         <Route path='/' element={<Home />} />
         <Route path='/ingredients/:id' element={<Element />} />

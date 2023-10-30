@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import { ingredientPropTypes } from '../../utils/types';
 import { useSelector } from 'react-redux';
 import { getBurgerIngredients } from '../../services/utils';
-import ingredientDetailsStyles from './ingredientDetails.module.css';
+import ingredientDetailsStyles from './IngredientDetails.module.css';
 
 function IngredientDetails() {
   let { id } = useParams();
@@ -15,7 +15,7 @@ function IngredientDetails() {
   if (!ingredient) return null;
   return (
     <>
-      <img src={ingredient.image} alt={ingredient.name} className='mb-4' />
+      <img src={ingredient.image} alt={ingredient.name} className={`${ingredientDetailsStyles.img} mb-4`} />
       <p className='text text_type_main-medium mb-8'>{ingredient.name}</p>
       <div className={ingredientDetailsStyles.info}>
         <p className={`${ingredientDetailsStyles.infoBox} text text_type_main-small`}>

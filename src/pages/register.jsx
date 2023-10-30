@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AppHeader from '../components/appHeader/appHeader';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import pagesStyles from './styles.module.css';
@@ -19,7 +18,7 @@ const Register = () => {
   const handleFormChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
-  const handleClick = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(registerUser(form));
   };
@@ -30,69 +29,60 @@ const Register = () => {
     }
   }, [user.isAuthenticated]);
   return (
-    <>
-      <AppHeader />
-      <div className={pagesStyles.loginWrapper}>
-        <h2 className='text text_type_main-medium mb-6'>Регистрация</h2>
-        <form id='register-form' className={pagesStyles.registerForm}>
-          <Input
-            type={'text'}
-            placeholder={'Имя'}
-            onChange={handleFormChange}
-            value={form.name}
-            name={'name'}
-            error={false}
-            errorText={'Ошибка'}
-            size={'default'}
-            extraClass='mb-6'
-          />
-          <Input
-            type={'email'}
-            placeholder={'E-mail'}
-            onChange={handleFormChange}
-            value={form.email}
-            name={'email'}
-            error={false}
-            errorText={'Ошибка'}
-            size={'default'}
-            extraClass='mb-6'
-          />
-          <Input
-            type={'password'}
-            placeholder={'Пароль'}
-            onChange={handleFormChange}
-            icon={'CurrencyIcon'}
-            value={form.password}
-            name={'password'}
-            error={false}
-            errorText={'Ошибка'}
-            size={'default'}
-            extraClass='mb-6'
-          />
-          <Button
-            disabled={!form.email || !form.name || !form.password}
-            htmlType='submit'
-            type='primary'
-            size='large'
-            extraClass='mb-20'
-            onClick={handleClick}
-          >
-            Зарегистрироваться
-          </Button>
-        </form>
-        <p className='text text_type_main-small'>
-          Уже зарегистрированы?
-          <Button
-            htmlType='button'
-            type='secondary'
-            size='medium'
-            onClick={() => navigate('/login')}
-          >
-            Войти
-          </Button>
-        </p>
-      </div>
-    </>
+    <div className={pagesStyles.loginWrapper}>
+      <h2 className='text text_type_main-medium mb-6'>Регистрация</h2>
+      <form id='register-form' className={pagesStyles.registerForm} onSubmit={handleSubmit}>
+        <Input
+          type={'text'}
+          placeholder={'Имя'}
+          onChange={handleFormChange}
+          value={form.name}
+          name={'name'}
+          error={false}
+          errorText={'Ошибка'}
+          size={'default'}
+          extraClass='mb-6'
+        />
+        <Input
+          type={'email'}
+          placeholder={'E-mail'}
+          onChange={handleFormChange}
+          value={form.email}
+          name={'email'}
+          error={false}
+          errorText={'Ошибка'}
+          size={'default'}
+          extraClass='mb-6'
+        />
+        <Input
+          type={'password'}
+          placeholder={'Пароль'}
+          onChange={handleFormChange}
+          icon={'CurrencyIcon'}
+          value={form.password}
+          name={'password'}
+          error={false}
+          errorText={'Ошибка'}
+          size={'default'}
+          extraClass='mb-6'
+        />
+        <Button
+          disabled={!form.email || !form.name || !form.password}
+          htmlType='submit'
+          type='primary'
+          size='large'
+          extraClass='mb-20'
+        >
+          Зарегистрироваться
+        </Button>
+      </form>
+      <p className='text text_type_main-small'>
+        Уже зарегистрированы?
+        <Button htmlType='button' type='secondary' size='medium' onClick={() => navigate('/login')}>
+          Войти
+        </Button>
+      </p>
+    </div>
   );
 };
 

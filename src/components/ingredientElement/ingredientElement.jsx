@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ingredientPropTypes } from '../../utils/types';
-import ingredientElementStyle from './ingredientElement.module.css';
+import ingredientElementStyle from './IngredientElement.module.css';
 import { useDrag } from 'react-dnd';
 import { getDraggedElements } from '../../services/utils';
 import { Link, useLocation } from 'react-router-dom';

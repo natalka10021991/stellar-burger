@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { ProfileIcon, BurgerIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import buttonStyles from './menuButton.module.css';
+import buttonStyles from './MenuButton.module.css';
 import { PropTypes } from 'prop-types';
 
 function MenuButton({ icon, text, link }) {

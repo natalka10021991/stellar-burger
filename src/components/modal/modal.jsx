@@ -2,22 +2,25 @@ import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
-import modalStyles from './modal.module.css';
-import ModalOverlay from '../modalOverlay/modalOverlay';
+import modalStyles from './Modal.module.css';
+import ModalOverlay from '../ModalOverlay/ModalOverlay';
+import { useNavigate } from 'react-router-dom';
 
 function Modal({ title, children, setIsOpen }) {
+  const navigate = useNavigate();
   const modalRoot = document.getElementById('modals');
   const closeModal = () => {
     setIsOpen(false);
+    navigate('/')
   };
 
   const handleKeyDown = () => {
-    document.addEventListener('keydown', (e) => {
+    window.addEventListener('keydown', (e) => {
       if (e.code === 'Escape') {
         closeModal();
       }
     });
-    return document.removeEventListener('keydown', (e) => {
+    return window.removeEventListener('keydown', (e) => {
       if (e.code === 'Escape') {
         closeModal();
       }

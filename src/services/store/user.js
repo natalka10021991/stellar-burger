@@ -1,19 +1,20 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { GET_USER } from '../../routes';
-import { getCookie } from '../utils';
+import { BASE_URL } from '../../routes';
+import { checkResponse } from '../utils';
 
-export const getUser = createAsyncThunk('user/getUser', () => {
-  return fetch(GET_USER, {
+export const getUser = createAsyncThunk('user/getUser', (token) => {
+  return fetch(`${BASE_URL}/auth/user`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
-      Authorization: getCookie('accessToken'),
+      Authorization: token,
     },
   })
-    .then((res) => res.json())
-    .then((data) => data)
-    .catch((e) => console.log(e));
+    .then(checkResponse)
+    .then((data) => {
+      return data;
+    });
 });
 
 const initialState = {
@@ -27,15 +28,15 @@ const initialState = {
 };
 
 export const updateUser = createAsyncThunk('user/getUser', (user) => {
-  return fetch(GET_USER, {
+  return fetch(`${BASE_URL}/auth/user`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
-      Authorization: getCookie('accessToken'),
+      Authorization: localStorage.getItem('refreshToken'),
     },
     body: JSON.stringify(user),
   })
-    .then((res) => res.json())
+    .then(checkResponse)
     .then((data) => data);
 });
 

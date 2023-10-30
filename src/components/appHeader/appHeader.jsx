@@ -1,10 +1,10 @@
 import React from 'react';
 import { Logo } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import Menu from '../menu/menu';
+import Menu from '../Menu/Menu';
 
-import styles from './appHeader.module.css';
-import MenuButton from '../menuButton/menuButton';
+import styles from './AppHeader.module.css';
+import MenuButton from '../MenuButton/MenuButton';
 
 function AppHeader() {
   return (

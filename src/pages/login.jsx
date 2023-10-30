@@ -1,14 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
-import AppHeader from '../components/appHeader/appHeader';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import pagesStyles from './styles.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser, updateUser } from '../services/store/login';
-import { getCookie } from '../services/utils';
+import { loginUser } from '../services/store/login';
 import { getUser } from '../services/store/user';
-import { UPDATE_TOKEN } from '../routes';
+import { updateToken } from '../services/store/updateToken';
 const Login = () => {
   const [form, setForm] = useState({
     email: '',
@@ -21,107 +19,91 @@ const Login = () => {
   const handleFormChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
-
-  const handleClick = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(loginUser(form));
   };
-
-  const updateToken = () => {
-    fetch(UPDATE_TOKEN, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8',
-      },
-      body: JSON.stringify({token: getCookie('refreshToken')})
-    })
-    .then(res => res.json())
-    .then(data => data)
-    .catch(e => console.log(e, 'error'))
-  }
-
+  const token = localStorage.getItem('accessToken');
   useEffect(() => {
-    const token = getCookie('accessToken')
     if (token) {
-      dispatch(getUser())
+      dispatch(getUser(token));
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (user.user && user.error === 'jwt expired') {
-      updateToken()
+      const token = localStorage.getItem('accessToken');
+      dispatch(updateToken(token));
     }
+
     if (user.user && user.user.email) {
-      dispatch(updateUser());
+      const token = localStorage.getItem('accessToken');
+      dispatch(getUser(token));
     }
-  }, [user])
+  }, [user]);
 
   if (userLogin.isAuthenticated) return <Navigate to='/' replace />;
 
   return (
-    <>
-      <AppHeader />
-      <div className={pagesStyles.loginWrapper}>
-        <h2 className='text text_type_main-medium mb-6'>Вход</h2>
-        <form className={pagesStyles.loginForm}>
-          <Input
-            type={'email'}
-            placeholder={'E-mail'}
-            onChange={handleFormChange}
-            value={form.email}
-            name={'email'}
-            error={false}
-            errorText={'Ошибка'}
-            size={'default'}
-            extraClass='mb-6'
-          />
-          <Input
-            type={'password'}
-            placeholder={'Пароль'}
-            onChange={handleFormChange}
-            icon={'CurrencyIcon'}
-            value={form.password}
-            name={'password'}
-            error={false}
-            errorText={'Ошибка'}
-            size={'default'}
-            extraClass='mb-6'
-          />
-          <Button
-            disabled={!form.email || !form.password}
-            htmlType='button'
-            type='primary'
-            size='large'
-            extraClass='mb-20'
-            onClick={handleClick}
-          >
-            Войти
-          </Button>
-        </form>
-        <p className='text text_type_main-small'>
-          Вы — новый пользователь?{' '}
-          <Button
-            htmlType='button'
-            type='secondary'
-            size='medium'
-            onClick={() => navigate('/register')}
-          >
-            Зарегистрироваться
-          </Button>
-        </p>
-        <p className='text text_type_main-small'>
-          Забыли пароль?
-          <Button
-            htmlType='button'
-            type='secondary'
-            size='medium'
-            onClick={() => navigate('/forgot-password')}
-          >
-            Восстановить пароль
-          </Button>
-        </p>
-      </div>
-    </>
+    <div className={pagesStyles.loginWrapper}>
+      <h2 className='text text_type_main-medium mb-6'>Вход</h2>
+      <form className={pagesStyles.loginForm} onSubmit={handleSubmit}>
+        <Input
+          type={'email'}
+          placeholder={'E-mail'}
+          onChange={handleFormChange}
+          value={form.email}
+          name={'email'}
+          error={false}
+          errorText={'Ошибка'}
+          size={'default'}
+          extraClass='mb-6'
+        />
+        <Input
+          type={'password'}
+          placeholder={'Пароль'}
+          onChange={handleFormChange}
+          icon={'CurrencyIcon'}
+          value={form.password}
+          name={'password'}
+          error={false}
+          errorText={'Ошибка'}
+          size={'default'}
+          extraClass='mb-6'
+        />
+        <Button
+          disabled={!form.email || !form.password}
+          htmlType='submit'
+          type='primary'
+          size='large'
+          extraClass='mb-20'
+        >
+          Войти
+        </Button>
+      </form>
+      <p className='text text_type_main-small'>
+        Вы — новый пользователь?{' '}
+        <Button
+          htmlType='button'
+          type='secondary'
+          size='medium'
+          onClick={() => navigate('/register')}
+        >
+          Зарегистрироваться
+        </Button>
+      </p>
+      <p className='text text_type_main-small'>
+        Забыли пароль?
+        <Button
+          htmlType='button'
+          type='secondary'
+          size='medium'
+          onClick={() => navigate('/forgot-password')}
+        >
+          Восстановить пароль
+        </Button>
+      </p>
+    </div>
   );
 };
 

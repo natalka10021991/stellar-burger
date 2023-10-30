@@ -1,54 +1,49 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { LOGIN_URL, LOGOUT_URL, GET_USER } from '../../routes';
-import { getCookie, setCookie } from '../utils';
+import { BASE_URL } from '../../routes';
+import { setCookie, checkResponse } from '../utils';
 
 export const loginUser = createAsyncThunk('loginUser', (user) => {
   const payload = {
     email: user.email,
     password: user.password,
   };
-  return fetch(LOGIN_URL, {
+  return fetch(`${BASE_URL}/auth/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
     },
     body: JSON.stringify(payload),
   })
-    .then((res) => res.json())
+    .then(checkResponse)
     .then((data) => {
-      setCookie('accessToken', data.accessToken);
-      setCookie('refreshToken', data.refreshToken);
       return data;
-    })
-    .catch((e) => console.log(e));
+    });
 });
 
-export const updateUser = createAsyncThunk('updateUser', () => {
-  return fetch(GET_USER, {
+export const updateUser = createAsyncThunk('updateUser', (token) => {
+  return fetch(`${BASE_URL}/auth/user`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
-      Authorization: getCookie('accessToken'),
+      Authorization: token,
     },
   })
-    .then((res) => res.json())
+    .then(checkResponse)
     .then((data) => {
-      setCookie('accessToken', data.accessToken);
-      setCookie('refreshToken', data.refreshToken);
       return data;
     })
     .catch((e) => console.log(e));
 });
 
-export const logoutUser = createAsyncThunk('logoutUser', () => {
-  return fetch(LOGOUT_URL, {
+export const logoutUser = createAsyncThunk('logoutUser', (token) => {
+  return fetch(`${BASE_URL}/auth/logout`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
     },
-    body: JSON.stringify({ token: getCookie('refreshToken') }),
+    body: JSON.stringify({ token: token }),
   })
-    .then((res) => res.json())
+    .then((res) => checkResponse(res))
     .then((data) => data)
     .catch((e) => console.log(e, 'error'));
 });
@@ -83,6 +78,8 @@ export const loginUserSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         if (action.payload.success) {
           // Добавляем пользователя
+          localStorage.setItem('accessToken', action.payload.accessToken);
+          localStorage.setItem('refreshToken', action.payload.refreshToken);
           state.user = action.payload.user;
           state.loadingStatus = 'success';
           state.isAuthenticated = true;
@@ -112,8 +109,8 @@ export const loginUserSlice = createSlice({
 
           state.loadingStatus = 'success';
           state.error = null;
-          setCookie('accessToken', null);
-          setCookie('refreshToken', null);
+          localStorage.setItem('accessToken', null);
+          localStorage.setItem('refreshToken', null);
         }
       })
       // // Вызывается в случае ошибки

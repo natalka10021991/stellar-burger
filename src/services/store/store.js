@@ -6,6 +6,8 @@ import { registerUserSlice } from './auth';
 import { loginUserSlice } from './login';
 import { getUserSlice, updateUserSlice } from './user';
 import { currentIngredientSlice } from './currentIngredient';
+import { resetPasswordSlice, setNewPasswordSlice } from './resetPassword';
+import { updateTokenSlice } from './updateToken';
 
 export const rootReducer = combineReducers({
   burgerIngredients: burgerIngredientsSlice.reducer,
@@ -15,7 +17,10 @@ export const rootReducer = combineReducers({
   loginUser: loginUserSlice.reducer,
   getUser: getUserSlice.reducer,
   updateUser: updateUserSlice.reducer,
-  currentIngredient: currentIngredientSlice.reducer
+  currentIngredient: currentIngredientSlice.reducer,
+  resetPassword: resetPasswordSlice.reducer,
+  setNewPassword: setNewPasswordSlice.reducer,
+  updateToken: updateTokenSlice.reducer
 });
 
 export const store = configureStore({

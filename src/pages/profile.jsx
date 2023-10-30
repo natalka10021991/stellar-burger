@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import AppHeader from '../components/appHeader/appHeader';
 import {
   EmailInput,
   PasswordInput,
@@ -23,7 +22,8 @@ const Profile = () => {
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
-  const handleSave = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     dispatch(updateUser(data));
   };
 
@@ -35,7 +35,8 @@ const Profile = () => {
 
   const handleLogout = (e) => {
     e.preventDefault();
-    dispatch(logoutUser());
+    const token = localStorage.getItem('refreshToken');
+    dispatch(logoutUser(token));
   };
 
   useEffect(() => {
@@ -47,84 +48,81 @@ const Profile = () => {
   }, [user]);
 
   return (
-    <>
-      <AppHeader />
-      <div className={pagesStyles.profileWrapper}>
-        <div className={`${pagesStyles.profileMenu} text text_type_main-medium`}>
-          <NavLink
-            to='/profile'
-            style={(isActive) => {
-              return {
-                color: isActive ? 'white' : '',
-              };
-            }}
-          >
-            Профиль
-          </NavLink>
-          <NavLink to='/profile/orders'>История заказов</NavLink>
-          <NavLink to='/logout' onClick={handleLogout}>
-            Выход
-          </NavLink>
-        </div>
-        <form className={pagesStyles.registerForm}>
-          <EmailInput
-            type={'text'}
-            placeholder={'Имя'}
-            onChange={handleChange}
-            value={(data && data.name) ?? ''}
-            name={'name'}
-            error={false}
-            errorText={'Ошибка'}
-            size={'default'}
-            extraClass='mb-6'
-            isIcon={true}
-          />
-          <EmailInput
-            type={'email'}
-            placeholder={'E-mail'}
-            onChange={handleChange}
-            value={(data && data.email) ?? ''}
-            name={'email'}
-            error={false}
-            errorText={'Ошибка'}
-            size={'default'}
-            extraClass='mb-6'
-            isIcon={true}
-          />
-          <PasswordInput
-            type={'password'}
-            placeholder={'Пароль'}
-            onChange={handleChange}
-            value={(data && data.password) ?? ''}
-            name={'password'}
-            error={false}
-            errorText={'Ошибка'}
-            size={'default'}
-            extraClass='mb-6'
-            isIcon={true}
-          />
-          <div className={pagesStyles.buttonsWrapper}>
-            {data && (data.email || data.name || data.password) && (
-              <>
-                {' '}
-                <Button
-                  htmlType='button'
-                  type='secondary'
-                  size='large'
-                  extraClass='mr-4'
-                  onClick={handleCancel}
-                >
-                  Отмена
-                </Button>
-                <Button htmlType='button' type='primary' size='large' onClick={handleSave}>
-                  Сохранить
-                </Button>
-              </>
-            )}
-          </div>
-        </form>
+    <div className={pagesStyles.profileWrapper}>
+      <div className={`${pagesStyles.profileMenu} text text_type_main-medium`}>
+        <NavLink
+          to='/profile'
+          style={(isActive) => {
+            return {
+              color: isActive ? 'white' : '',
+            };
+          }}
+        >
+          Профиль
+        </NavLink>
+        <NavLink to='/profile/orders'>История заказов</NavLink>
+        <NavLink to='/logout' onClick={handleLogout}>
+          Выход
+        </NavLink>
       </div>
-    </>
+      <form className={pagesStyles.registerForm} onSubmit={handleSubmit}>
+        <EmailInput
+          type={'text'}
+          placeholder={'Имя'}
+          onChange={handleChange}
+          value={(data && data.name) ?? ''}
+          name={'name'}
+          error={false}
+          errorText={'Ошибка'}
+          size={'default'}
+          extraClass='mb-6'
+          isIcon={true}
+        />
+        <EmailInput
+          type={'email'}
+          placeholder={'E-mail'}
+          onChange={handleChange}
+          value={(data && data.email) ?? ''}
+          name={'email'}
+          error={false}
+          errorText={'Ошибка'}
+          size={'default'}
+          extraClass='mb-6'
+          isIcon={true}
+        />
+        <PasswordInput
+          type={'password'}
+          placeholder={'Пароль'}
+          onChange={handleChange}
+          value={(data && data.password) ?? ''}
+          name={'password'}
+          error={false}
+          errorText={'Ошибка'}
+          size={'default'}
+          extraClass='mb-6'
+          isIcon={true}
+        />
+        <div className={pagesStyles.buttonsWrapper}>
+          {data && (data.email || data.name || data.password) && (
+            <>
+              {' '}
+              <Button
+                htmlType='button'
+                type='secondary'
+                size='large'
+                extraClass='mr-4'
+                onClick={handleCancel}
+              >
+                Отмена
+              </Button>
+              <Button htmlType='submit' type='primary' size='large'>
+                Сохранить
+              </Button>
+            </>
+          )}
+        </div>
+      </form>
+    </div>
   );
 };
 

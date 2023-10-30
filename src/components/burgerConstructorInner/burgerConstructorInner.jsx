@@ -2,7 +2,7 @@ import { useDispatch } from 'react-redux';
 import { useDrop, useDrag } from 'react-dnd';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import burgerConstructorInnerStyles from './burgerConstructorInner.module.css';
+import burgerConstructorInnerStyles from './BurgerConstructorInner.module.css';
 import { removeIngredient } from '../../services/store/burgerConstructor';
 
 function BurgerConstructorInner({ item, id, moveCard, findCard }) {

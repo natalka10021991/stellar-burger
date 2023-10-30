@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import modalOverlayStyles from './modalOverlay.module.css';
+import modalOverlayStyles from './ModalOverlay.module.css';
 
 function ModalOverlay({ setIsOpen }) {
   const handleClick = () => {
