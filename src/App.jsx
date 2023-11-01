@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -38,13 +38,20 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/ingredients/:id' element={<Element />} />
         <Route path='/orders' element={<Orders />} />
-        <Route path='/login' element={<Login />} />
+        <Route
+          path='/login'
+          element={
+            <ProtectedRouteElement onlyUnAuth={true} element={<Login />}></ProtectedRouteElement>
+          }
+        />
         <Route path='/register' element={<Register />} />
         <Route path='/forgot-password' element={<ForgotPassword />} />
         <Route path='/reset-password' element={<ResetPassword />} />
         <Route
           path='/profile'
-          element={<ProtectedRouteElement element={<Profile />}></ProtectedRouteElement>}
+          element={
+            <ProtectedRouteElement onlyUnAuth={false} element={<Profile />}></ProtectedRouteElement>
+          }
         />
       </Routes>
       {state?.backgroundLocation && isOpen && (

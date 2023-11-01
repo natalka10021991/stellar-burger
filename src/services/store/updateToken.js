@@ -2,7 +2,9 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { BASE_URL } from '../../routes';
 import { checkResponse } from '../utils';
 
-export const updateToken = createAsyncThunk('resetPassword', (token) => {
+export const updateToken = createAsyncThunk('resetPassword', () => {
+  const token = localStorage.getItem("refreshToken");
+
   return fetch(`${BASE_URL}/auth/token`, {
     method: 'POST',
     headers: {

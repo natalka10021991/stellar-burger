@@ -11,24 +11,19 @@ function Modal({ title, children, setIsOpen }) {
   const modalRoot = document.getElementById('modals');
   const closeModal = () => {
     setIsOpen(false);
-    navigate('/')
-  };
-
-  const handleKeyDown = () => {
-    window.addEventListener('keydown', (e) => {
-      if (e.code === 'Escape') {
-        closeModal();
-      }
-    });
-    return window.removeEventListener('keydown', (e) => {
-      if (e.code === 'Escape') {
-        closeModal();
-      }
-    });
+    navigate('/');
   };
 
   useEffect(() => {
-    handleKeyDown();
+    function closeByEscape(evt) {
+      if (evt.key === 'Escape') {
+        closeModal();
+      }
+    }
+    document.addEventListener('keydown', closeByEscape);
+    return () => {
+      document.removeEventListener('keydown', closeByEscape);
+    };
   }, []);
 
   return createPortal(

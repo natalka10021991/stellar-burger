@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import {
   EmailInput,
   PasswordInput,
@@ -8,7 +8,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 
 import pagesStyles from './styles.module.css';
-import { getUser, updateUser } from '../services/store/user';
+import { updateUser } from '../services/store/user';
 import { logoutUser } from '../services/store/login';
 
 const Profile = () => {
@@ -18,7 +18,9 @@ const Profile = () => {
     password: '*******',
   });
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useSelector((store) => store.getUser.user);
+  const loginUser = useSelector((store) => store.loginUser);
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
@@ -31,20 +33,19 @@ const Profile = () => {
     setData(user);
   };
 
-  // const checkClassName = (isActive) => (!isActive ? 'text_color_inactive' : '');
-
   const handleLogout = (e) => {
     e.preventDefault();
-    const token = localStorage.getItem('refreshToken');
-    dispatch(logoutUser(token));
+    dispatch(logoutUser());
+    navigate('/');
   };
 
   useEffect(() => {
-    dispatch(getUser());
-  }, []);
+    if (loginUser.isAuthenticated) {
+      setData(loginUser.user);
+    } else {
+      setData(user);
+    }
 
-  useEffect(() => {
-    setData(user);
   }, [user]);
 
   return (

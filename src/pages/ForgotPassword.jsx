@@ -18,7 +18,7 @@ const ForgotPassword = () => {
 
   useEffect(() => {
     if (resetPasswordRequest.loadingStatus === 'success') {
-      navigate('/reset-password');
+      navigate('/reset-password', {state: {forgotPassword: true} });
     }
   }, [resetPasswordRequest]);
 

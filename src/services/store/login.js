@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { BASE_URL } from '../../routes';
-import { setCookie, checkResponse } from '../utils';
+import { checkResponse } from '../utils';
 
 export const loginUser = createAsyncThunk('loginUser', (user) => {
   const payload = {
@@ -20,12 +20,12 @@ export const loginUser = createAsyncThunk('loginUser', (user) => {
     });
 });
 
-export const updateUser = createAsyncThunk('updateUser', (token) => {
+export const updateUser = createAsyncThunk('updateUser', () => {
   return fetch(`${BASE_URL}/auth/user`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
-      Authorization: token,
+      Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
     },
   })
     .then(checkResponse)
@@ -35,13 +35,14 @@ export const updateUser = createAsyncThunk('updateUser', (token) => {
     .catch((e) => console.log(e));
 });
 
-export const logoutUser = createAsyncThunk('logoutUser', (token) => {
+export const logoutUser = createAsyncThunk('logoutUser', () => {
+  const token = localStorage.getItem('refreshToken');
   return fetch(`${BASE_URL}/auth/logout`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
     },
-    body: JSON.stringify({ token: token }),
+    body: JSON.stringify({ token: token}),
   })
     .then((res) => checkResponse(res))
     .then((data) => data)
@@ -77,8 +78,14 @@ export const loginUserSlice = createSlice({
       // Вызывается в том случае если запрос успешно выполнился
       .addCase(loginUser.fulfilled, (state, action) => {
         if (action.payload.success) {
+          let authToken = action.payload.accessToken;
+          authToken = authToken.split('Bearer ')[1];
+          if (authToken) {
+            // Сохраняем токен в куку token
+            localStorage.setItem('accessToken', authToken);
+          }
           // Добавляем пользователя
-          localStorage.setItem('accessToken', action.payload.accessToken);
+
           localStorage.setItem('refreshToken', action.payload.refreshToken);
           state.user = action.payload.user;
           state.loadingStatus = 'success';
@@ -109,8 +116,8 @@ export const loginUserSlice = createSlice({
 
           state.loadingStatus = 'success';
           state.error = null;
-          localStorage.setItem('accessToken', null);
-          localStorage.setItem('refreshToken', null);
+          localStorage.removeItem('accessToken');
+          localStorage.removeItem('refreshToken');
         }
       })
       // // Вызывается в случае ошибки

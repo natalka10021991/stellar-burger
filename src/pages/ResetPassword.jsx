@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation, Navigate } from 'react-router-dom';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import pagesStyles from './styles.module.css';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,16 +13,18 @@ const ResetPassword = () => {
   const dispatch = useDispatch();
   const setNewPasswordRequest = useSelector((store) => store.setNewPassword);
   const navigate = useNavigate();
+  const location = useLocation();
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(setNewPassword(values));
   };
-
   useEffect(() => {
     if (setNewPasswordRequest.loadingStatus === 'success') {
       navigate('/login');
     }
   }, [setNewPasswordRequest]);
+
+  if (!location.state?.forgotPassword) return <Navigate to='/login' />;
   return (
     <div className={pagesStyles.loginWrapper}>
       <h2 className='text text_type_main-medium mb-6'>Восстановление пароля</h2>
