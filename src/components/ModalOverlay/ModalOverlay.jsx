@@ -1,14 +1,11 @@
 import PropTypes from 'prop-types';
-import { useNavigate } from 'react-router-dom';
 
 import modalOverlayStyles from './ModalOverlay.module.css';
 
-function ModalOverlay({ setIsOpen }) {
-  const navigate = useNavigate();
+function ModalOverlay({ closeModal }) {
 
   const handleClick = () => {
-    setIsOpen(false);
-    navigate('/');
+    closeModal();
   };
 
   return <div className={modalOverlayStyles.modalOverlay} onClick={handleClick} />;

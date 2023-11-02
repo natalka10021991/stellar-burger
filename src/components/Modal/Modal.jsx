@@ -4,15 +4,9 @@ import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
 import modalStyles from './Modal.module.css';
 import ModalOverlay from '../ModalOverlay/ModalOverlay';
-import { useNavigate } from 'react-router-dom';
 
-function Modal({ title, children, setIsOpen }) {
-  const navigate = useNavigate();
+function Modal({ title, children, closeModal }) {
   const modalRoot = document.getElementById('modals');
-  const closeModal = () => {
-    setIsOpen(false);
-    navigate('/');
-  };
 
   useEffect(() => {
     function closeByEscape(evt) {
@@ -37,7 +31,7 @@ function Modal({ title, children, setIsOpen }) {
         </header>
         <main className={modalStyles.content}>{children}</main>
       </div>
-      <ModalOverlay setIsOpen={setIsOpen} />
+      <ModalOverlay closeModal={closeModal} />
     </div>,
     modalRoot
   );

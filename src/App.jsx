@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -17,6 +17,7 @@ import { getBurgerIngredients } from './services/store/burgerIngredients';
 
 function App() {
   const location = useLocation();
+  const navigate = useNavigate();
   const state = location.state;
   const [isOpen, setIsOpen] = useState(false);
 
@@ -31,6 +32,11 @@ function App() {
     dispatch(getBurgerIngredients());
   }, []);
 
+  const closeModal = () => {
+    setIsOpen(false);
+    navigate('/');
+  };
+
   return (
     <div className='app'>
       <AppHeader />
@@ -44,8 +50,22 @@ function App() {
             <ProtectedRouteElement onlyUnAuth={true} element={<Login />}></ProtectedRouteElement>
           }
         />
+        <Route
+          path='/register'
+          element={
+            <ProtectedRouteElement onlyUnAuth={true} element={<Register />}></ProtectedRouteElement>
+          }
+        />
         <Route path='/register' element={<Register />} />
-        <Route path='/forgot-password' element={<ForgotPassword />} />
+        <Route
+          path='/forgot-password'
+          element={
+            <ProtectedRouteElement
+              onlyUnAuth={true}
+              element={<ForgotPassword />}
+            ></ProtectedRouteElement>
+          }
+        />
         <Route path='/reset-password' element={<ResetPassword />} />
         <Route
           path='/profile'
@@ -59,7 +79,7 @@ function App() {
           <Route
             path='/ingredients/:id'
             element={
-              <Modal title={'Детали ингредиента'} setIsOpen={setIsOpen}>
+              <Modal title={'Детали ингредиента'} closeModal={closeModal}>
                 <IngredientDetails />
               </Modal>
             }

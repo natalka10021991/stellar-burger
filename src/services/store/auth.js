@@ -27,8 +27,6 @@ const initialState = {
     email: '',
     name: '',
   },
-  accessToken: '',
-  refreshToken: '',
 };
 
 export const registerUserSlice = createSlice({
@@ -51,8 +49,6 @@ export const registerUserSlice = createSlice({
       .addCase(registerUser.fulfilled, (state, action) => {
         // Добавляем пользователя
         state.user = action.payload.user;
-        state.accessToken = action.payload.accessToken;
-        state.refreshToken = action.payload.refreshToken;
         state.loadingStatus = 'success';
         state.isAuthenticated = true;
         state.error = null;

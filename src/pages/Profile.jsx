@@ -8,8 +8,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 
 import pagesStyles from './styles.module.css';
-import { updateUser } from '../services/store/user';
-import { logoutUser } from '../services/store/login';
+import { updateUserData, logoutUser } from '../services/store/user';
 
 const Profile = () => {
   const [data, setData] = useState({
@@ -17,35 +16,39 @@ const Profile = () => {
     email: '',
     password: '*******',
   });
+  const [isDataChanged, setDataChange] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((store) => store.getUser.user);
-  const loginUser = useSelector((store) => store.loginUser);
+  const user = useSelector((store) => store.user.user);
   const handleChange = (e) => {
+    setDataChange(true);
     setData({ ...data, [e.target.name]: e.target.value });
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(updateUser(data));
+    dispatch(updateUserData(data));
+    setDataChange(false);
   };
 
   const handleCancel = () => {
     setData(user);
+    setDataChange(false);
   };
 
   const handleLogout = (e) => {
     e.preventDefault();
     dispatch(logoutUser());
-    navigate('/');
   };
 
   useEffect(() => {
-    if (loginUser.isAuthenticated) {
-      setData(loginUser.user);
+    if (user.user?.email && user.user?.name) {
+      setData(user.user);
     } else {
       setData(user);
     }
-
+    if (user.LoadingStatus === 'userLoggedOut') {
+      navigate('/login');
+    }
   }, [user]);
 
   return (
@@ -77,7 +80,7 @@ const Profile = () => {
           errorText={'Ошибка'}
           size={'default'}
           extraClass='mb-6'
-          isIcon={true}
+          isIcon
         />
         <EmailInput
           type={'email'}
@@ -89,7 +92,7 @@ const Profile = () => {
           errorText={'Ошибка'}
           size={'default'}
           extraClass='mb-6'
-          isIcon={true}
+          isIcon
         />
         <PasswordInput
           type={'password'}
@@ -101,10 +104,10 @@ const Profile = () => {
           errorText={'Ошибка'}
           size={'default'}
           extraClass='mb-6'
-          isIcon={true}
+          icon='ShowIcon'
         />
         <div className={pagesStyles.buttonsWrapper}>
-          {data && (data.email || data.name || data.password) && (
+          {isDataChanged && (
             <>
               {' '}
               <Button

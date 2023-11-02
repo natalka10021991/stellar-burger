@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { ProfileIcon, BurgerIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { ProfileIcon, BurgerIcon, ListIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import buttonStyles from './MenuButton.module.css';
 import { PropTypes } from 'prop-types';
@@ -14,7 +14,7 @@ function MenuButton({ icon, text, link }) {
       case 'profile':
         return <ProfileIcon type='primary' />;
       case 'list':
-        return <ProfileIcon type='primary' />;
+        return <ListIcon type='primary' />;
       default:
         return <></>;
     }

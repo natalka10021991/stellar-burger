@@ -5,6 +5,7 @@ import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-component
 import pagesStyles from './styles.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser } from '../services/store/auth';
+import { getUser } from '../services/store/user';
 
 const Register = () => {
   const [form, setForm] = useState({
@@ -28,6 +29,15 @@ const Register = () => {
       navigate('/login');
     }
   }, [user.isAuthenticated]);
+
+  const token = localStorage.getItem('accessToken');
+
+  useEffect(() => {
+    if (!!token) {
+      dispatch(getUser());
+    }
+  }, []);
+
   return (
     <div className={pagesStyles.loginWrapper}>
       <h2 className='text text_type_main-medium mb-6'>Регистрация</h2>

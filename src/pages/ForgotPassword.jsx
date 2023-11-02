@@ -5,6 +5,7 @@ import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-component
 import pagesStyles from './styles.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { resetPassword } from '../services/store/resetPassword';
+import { getUser } from '../services/store/user';
 
 const ForgotPassword = () => {
   const [value, setValue] = useState('');
@@ -21,6 +22,14 @@ const ForgotPassword = () => {
       navigate('/reset-password', {state: {forgotPassword: true} });
     }
   }, [resetPasswordRequest]);
+
+  const token = localStorage.getItem('accessToken');
+
+  useEffect(() => {
+    if (!!token) {
+      dispatch(getUser());
+    }
+  }, []);
 
   return (
     <div className={pagesStyles.loginWrapper}>

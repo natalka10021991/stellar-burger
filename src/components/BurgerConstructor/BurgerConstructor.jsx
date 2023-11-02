@@ -26,9 +26,10 @@ function BurgerConstructor({ elements, onDropHandler }) {
   const orderNumber = useSelector((store) => store.createOrder.orderDetails.order.number);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((store) => store.getUser);
+  const user = useSelector((store) => store.user);
+  const isUserLoggedIn = user.user.email && user.user.name;
   const handleClick = () => {
-    if (!user.user.email) {
+    if (!isUserLoggedIn) {
       navigate('/login');
     } else {
       dispatch(createOrder(draggedElements.map((item) => item._id)));
@@ -41,6 +42,10 @@ function BurgerConstructor({ elements, onDropHandler }) {
       onDropHandler(item);
     },
   });
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   const findCard = useCallback(
     (id) => {
@@ -138,7 +143,7 @@ function BurgerConstructor({ elements, onDropHandler }) {
       </div>
 
       {isModalOpen && !!orderNumber && (
-        <Modal title='' setIsOpen={setIsModalOpen}>
+        <Modal title='' closeModal={closeModal}>
           <OrderDetails />
         </Modal>
       )}

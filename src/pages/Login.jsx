@@ -4,8 +4,7 @@ import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-component
 
 import pagesStyles from './styles.module.css';
 import { useDispatch } from 'react-redux';
-import { loginUser } from '../services/store/login';
-import { getUser } from '../services/store/user';
+import { getUser, loginUser } from '../services/store/user';
 const Login = () => {
   const [form, setForm] = useState({
     email: '',
@@ -21,6 +20,7 @@ const Login = () => {
     dispatch(loginUser(form));
   };
   const token = localStorage.getItem('accessToken');
+ 
   useEffect(() => {
     if (!!token) {
       dispatch(getUser());

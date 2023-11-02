@@ -3,27 +3,21 @@ import { Navigate, useLocation } from 'react-router-dom';
 
 export const ProtectedRouteElement = ({ onlyUnAuth, element }) => {
   const location = useLocation();
-  const user = useSelector((store) => store.loginUser);
-  const isUserData = useSelector((store => store.getUser.isUser))
+  const user = useSelector((store) => store.user);
 
-const isAuthChecked = user.isAuthenticated || isUserData
-if (!onlyUnAuth && isAuthChecked) {
-  return (
-    element  //profile
-  )
-}
+  const isAuthChecked = user.user.email && user.user.name;
+  const { from } = location.state || { from: { pathname: '/' } }; //login
+  if (user.loadingStatus === 'patchingIsLoading' || user.loadingStatus === 'gettingDataIsLoading')
+    return <div>Updating...</div>;
 
   if (!onlyUnAuth && !isAuthChecked) {
     return (
-      <Navigate to='/login' state={{ from: location }} />  //profile
-    )
+      <Navigate to='/login' state={{ from: location }} /> //profile
+    );
   }
-
-    if (onlyUnAuth && isAuthChecked) {
-    const { from } = location.state || { from: { pathname: '/' } }; //login
+  if (onlyUnAuth && isAuthChecked) {
     return <Navigate to={from} />;
   }
 
   return element;
-
 };
