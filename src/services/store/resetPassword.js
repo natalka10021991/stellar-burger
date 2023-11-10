@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { BASE_URL } from '../../routes';
-import { checkResponse } from '../utils';
+import { request } from '../utils';
 
 export const resetPassword = createAsyncThunk('resetPassword', (value) => {
-  return fetch(`${BASE_URL}/password-reset`, {
+  return request(`${BASE_URL}/password-reset`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
@@ -12,10 +12,7 @@ export const resetPassword = createAsyncThunk('resetPassword', (value) => {
       email: value,
     }),
   })
-    .then(checkResponse)
-    .then((data) => {
-      return data.data;
-    });
+  .then(data => data.data)
 });
 
 const initialStateResetPassword = {
@@ -50,7 +47,7 @@ export const resetPasswordSlice = createSlice({
 });
 
 export const setNewPassword = createAsyncThunk('setNewPassword', (values) => {
-  return fetch(`${BASE_URL}/password-reset/reset`, {
+  return request(`${BASE_URL}/password-reset/reset`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
@@ -60,10 +57,7 @@ export const setNewPassword = createAsyncThunk('setNewPassword', (values) => {
       token: values.token,
     }),
   })
-    .then(checkResponse)
-    .then((data) => {
-      return data;
-    });
+  .then(data => data)
 });
 
 const initialStateSetNewPassword = {

@@ -1,21 +1,21 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import { BASE_URL } from '../../routes';
-import { checkResponse } from '../utils';
+import { request } from '../utils';
 
 export const createOrder = createAsyncThunk('orderDetails/createOrder', (ingredients) => {
   const payload = {
     ingredients: ingredients,
   };
-  return fetch(`${BASE_URL}/orders`, {
+
+  return request(`${BASE_URL}/orders`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
     },
     body: JSON.stringify(payload),
   })
-    .then(checkResponse)
-    .then((data) => data);
+  .then((data) => data);
 });
 
 const initialState = {

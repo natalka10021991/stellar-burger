@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import { BASE_URL } from '../../routes';
-import { checkResponse } from '../utils';
+import { checkResponse, request } from '../utils';
 
 export const refreshToken = async () => {
   try {
@@ -53,7 +53,7 @@ export const getUser = createAsyncThunk('user/getUser', async () => {
 });
 
 export const updateUserData = createAsyncThunk('user/updateUser', (user) => {
-  return fetch(`${BASE_URL}/auth/user`, {
+  return request(`${BASE_URL}/auth/user`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
@@ -61,8 +61,7 @@ export const updateUserData = createAsyncThunk('user/updateUser', (user) => {
     },
     body: JSON.stringify(user),
   })
-    .then(checkResponse)
-    .then((data) => data);
+  .then(data => data)
 });
 
 export const loginUser = createAsyncThunk('loginUser', (user) => {
@@ -70,31 +69,26 @@ export const loginUser = createAsyncThunk('loginUser', (user) => {
     email: user.email,
     password: user.password,
   };
-  return fetch(`${BASE_URL}/auth/login`, {
+  return request(`${BASE_URL}/auth/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
     },
     body: JSON.stringify(payload),
   })
-    .then(checkResponse)
-    .then((data) => {
-      return data;
-    });
+  .then(data => data)
 });
 
 export const logoutUser = createAsyncThunk('logoutUser', () => {
   const token = localStorage.getItem('refreshToken');
-  return fetch(`${BASE_URL}/auth/logout`, {
+  return request(`${BASE_URL}/auth/logout`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
     },
     body: JSON.stringify({ token: token }),
   })
-    .then((res) => checkResponse(res))
-    .then((data) => data)
-    .catch((e) => console.log(e, 'error'));
+  .then(data => data)
 });
 
 const initialState = {

@@ -1,13 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { BASE_URL } from '../../routes';
-import { checkResponse } from '../utils';
+import { request } from '../utils';
 
 export const getBurgerIngredients = createAsyncThunk('burgerIngredients/getBurgerIngredients', () => {
-  return fetch(`${BASE_URL}/ingredients`)
-    .then(checkResponse)
-    .then((data) => {
-      return data.data;
-    });
+  return request(`${BASE_URL}/ingredients`)
+  .then(data => data.data)
 });
 
 const initialState = {

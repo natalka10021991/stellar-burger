@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { BASE_URL } from '../../routes';
-import { checkResponse } from '../utils';
+import { request } from '../utils';
 
 export const registerUser = createAsyncThunk('registerUser', (user) => {
   const payload = {
@@ -8,15 +8,14 @@ export const registerUser = createAsyncThunk('registerUser', (user) => {
     password: user.password,
     name: user.name,
   };
-  return fetch(`${BASE_URL}/auth/register`, {
+  return request(`${BASE_URL}/auth/register`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
     },
     body: JSON.stringify(payload),
   })
-    .then(checkResponse)
-    .then((data) => data);
+  .then((data) => data)
 });
 
 const initialState = {
