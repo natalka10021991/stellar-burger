@@ -1,11 +1,31 @@
+import { FC } from 'react';
 import { useDispatch } from 'react-redux';
 import { useDrop, useDrag } from 'react-dnd';
+import type { Identifier } from 'dnd-core';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-
-import burgerConstructorInnerStyles from './BurgerConstructorInner.module.css';
 import { removeIngredient } from '../../services/store/burgerConstructor';
 
-function BurgerConstructorInner({ item, id, moveCard, findCard }) {
+import burgerConstructorInnerStyles from './BurgerConstructorInner.module.css';
+import { IIngredient } from '../../utils/types';
+
+interface DragItem {
+  index: number;
+  id: string;
+  type: string;
+}
+
+interface IIngredientDragged extends IIngredient {
+  id: string;
+}
+
+interface Props {
+  item: IIngredientDragged;
+  id: string;
+  moveCard: any;
+  findCard: any;
+}
+
+const BurgerConstructorInner: FC<Props> = ({ item, id, moveCard, findCard }) => {
   const originalIndex = findCard(id).index;
 
   const [{ isDragging }, drag] = useDrag(
@@ -26,7 +46,7 @@ function BurgerConstructorInner({ item, id, moveCard, findCard }) {
     [id, originalIndex, moveCard]
   );
 
-  const [, drop] = useDrop(
+  const [, drop] = useDrop<DragItem, void, { handlerId: Identifier | null }>(
     () => ({
       accept: 'burgerConstructorElement',
       hover({ id: draggedId }) {
@@ -43,7 +63,7 @@ function BurgerConstructorInner({ item, id, moveCard, findCard }) {
 
   const dispatch = useDispatch();
 
-  const handleClose = (id) => {
+  const handleClose = (id: string) => {
     dispatch(removeIngredient(id));
   };
 
@@ -66,6 +86,6 @@ function BurgerConstructorInner({ item, id, moveCard, findCard }) {
       />
     </div>
   );
-}
+};
 
 export default BurgerConstructorInner;

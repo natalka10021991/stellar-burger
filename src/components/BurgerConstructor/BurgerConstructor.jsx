@@ -7,7 +7,7 @@ import {
   CurrencyIcon,
   Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import Modal from '../Modal/Modal';
+import Modal from '../Modal/Modal.tsx';
 
 import burgerConstructorStyles from './BurgerConstructor.module.css';
 import OrderDetails from '../OrderDetails/OrderDetails';
@@ -16,6 +16,7 @@ import { createOrder } from '../../services/store/orderDetails';
 import BurgerConstructorInner from '../BurgerConstructorInner/BurgerConstructorInner';
 import { getDraggedElements } from '../../services/utils';
 import { useNavigate } from 'react-router-dom';
+
 
 function BurgerConstructor({ elements, onDropHandler }) {
   const [isModalOpen, setIsModalOpen] = useState(false);

@@ -119,7 +119,7 @@ export const userSlice = createSlice({
       })
       // Вызывается в том случае если запрос успешно выполнился
       .addCase(getUser.fulfilled, (state, action) => {
-        if (action.payload.success) {
+        if (action?.payload?.success) {
           // Добавляем пользователя
           state.loadingStatus = 'success';
           state.error = null;

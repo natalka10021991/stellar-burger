@@ -1,11 +1,20 @@
-import React from 'react';
+import { FC } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { ProfileIcon, BurgerIcon, ListIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import {
+  ProfileIcon,
+  BurgerIcon,
+  ListIcon,
+} from '@ya.praktikum/react-developer-burger-ui-components';
 
 import buttonStyles from './MenuButton.module.css';
-import { PropTypes } from 'prop-types';
 
-function MenuButton({ icon, text, link }) {
+interface Props {
+  icon: string;
+  text: string;
+  link: string;
+}
+
+const MenuButton: FC<Props> = ({ icon, text, link }) => {
   const location = useLocation();
   const renderIcon = () => {
     switch (icon) {
@@ -32,11 +41,6 @@ function MenuButton({ icon, text, link }) {
       <span className={`ml-2 text text_type_main-default`}>{text}</span>
     </NavLink>
   );
-}
-// {`${buttonStyles.button} pl-4 pr-4 pt-4 pb-4 `}
-MenuButton.propTypes = {
-  text: PropTypes.string.isRequired,
-  icon: PropTypes.string.isRequired,
 };
 
 export default MenuButton;

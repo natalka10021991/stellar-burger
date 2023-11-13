@@ -5,7 +5,7 @@ const Home = () => {
   const { burgerIngredients, loadingStatus, error } = useSelector(
     (store) => store.burgerIngredients
   );
-
+console.log(burgerIngredients, 'burgerIngredients')
   return (
     <>
       {burgerIngredients && burgerIngredients.length && (

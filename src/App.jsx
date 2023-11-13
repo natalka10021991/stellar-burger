@@ -10,7 +10,7 @@ import Profile from './pages/Profile';
 import { ProtectedRouteElement } from './components/ProtectedRouteElement/ProtectedRouteElement';
 import Orders from './pages/Orders';
 import Element from './pages/Element';
-import Modal from './components/Modal/Modal';
+import Modal from './components/Modal/Modal.tsx';
 import IngredientDetails from './components/IngredientDetails/IngredientDetails';
 import AppHeader from './components/AppHeader/AppHeader';
 import { getBurgerIngredients } from './services/store/burgerIngredients';
