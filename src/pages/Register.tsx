@@ -1,26 +1,38 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, FormEventHandler } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import pagesStyles from './styles.module.css';
-import { useDispatch } from 'react-redux';
-import { getUser, loginUser } from '../services/store/user';
-const Login = () => {
+import { useDispatch, useSelector } from 'react-redux';
+import { registerUser } from '../services/store/auth';
+import { getUser } from '../services/store/user';
+import { AppDispatch, RootState } from '../services/store/store';
+
+const Register = () => {
   const [form, setForm] = useState({
+    name: '',
     email: '',
     password: '',
   });
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const handleFormChange = (e) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const user = useSelector((store: RootState) => store.registerUser);
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    dispatch(loginUser(form));
+    dispatch(registerUser(form));
   };
+
+  useEffect(() => {
+    if (user.isAuthenticated) {
+      navigate('/login');
+    }
+  }, [user.isAuthenticated]);
+
   const token = localStorage.getItem('accessToken');
- 
+
   useEffect(() => {
     if (!!token) {
       dispatch(getUser());
@@ -29,8 +41,19 @@ const Login = () => {
 
   return (
     <div className={pagesStyles.loginWrapper}>
-      <h2 className='text text_type_main-medium mb-6'>Вход</h2>
-      <form className={pagesStyles.loginForm} onSubmit={handleSubmit}>
+      <h2 className='text text_type_main-medium mb-6'>Регистрация</h2>
+      <form id='register-form' className={pagesStyles.registerForm} onSubmit={handleSubmit}>
+        <Input
+          type={'text'}
+          placeholder={'Имя'}
+          onChange={handleFormChange}
+          value={form.name}
+          name={'name'}
+          error={false}
+          errorText={'Ошибка'}
+          size={'default'}
+          extraClass='mb-6'
+        />
         <Input
           type={'email'}
           placeholder={'E-mail'}
@@ -55,39 +78,23 @@ const Login = () => {
           extraClass='mb-6'
         />
         <Button
-          disabled={!form.email || !form.password}
+          disabled={!form.email || !form.name || !form.password}
           htmlType='submit'
           type='primary'
           size='large'
           extraClass='mb-20'
         >
-          Войти
+          Зарегистрироваться
         </Button>
       </form>
       <p className='text text_type_main-small'>
-        Вы — новый пользователь?{' '}
-        <Button
-          htmlType='button'
-          type='secondary'
-          size='medium'
-          onClick={() => navigate('/register')}
-        >
-          Зарегистрироваться
-        </Button>
-      </p>
-      <p className='text text_type_main-small'>
-        Забыли пароль?
-        <Button
-          htmlType='button'
-          type='secondary'
-          size='medium'
-          onClick={() => navigate('/forgot-password')}
-        >
-          Восстановить пароль
+        Уже зарегистрированы?
+        <Button htmlType='button' type='secondary' size='medium' onClick={() => navigate('/login')}>
+          Войти
         </Button>
       </p>
     </div>
   );
 };
 
-export default Login;
+export default Register;

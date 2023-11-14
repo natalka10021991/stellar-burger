@@ -9,34 +9,35 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import pagesStyles from './styles.module.css';
 import { updateUserData, logoutUser } from '../services/store/user';
+import { AppDispatch, RootState } from '../services/store/store';
+import { IUser } from '../utils/types';
 
 const Profile = () => {
-  const [data, setData] = useState({
+  const [data, setData] = useState<IUser>({
     name: '',
     email: '',
     password: '*******',
   });
   const [isDataChanged, setDataChange] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const user = useSelector((store) => store.user.user);
-  const handleChange = (e) => {
+  const user = useSelector((store: RootState) => store.user);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDataChange(true);
     setData({ ...data, [e.target.name]: e.target.value });
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     dispatch(updateUserData(data));
     setDataChange(false);
   };
 
   const handleCancel = () => {
-    setData(user);
+    setData(user.user);
     setDataChange(false);
   };
 
-  const handleLogout = (e) => {
-    e.preventDefault();
+  const handleLogout = () => {
     dispatch(logoutUser());
   };
 
@@ -44,9 +45,9 @@ const Profile = () => {
     if (user.user?.email && user.user?.name) {
       setData(user.user);
     } else {
-      setData(user);
+      setData(user.user);
     }
-    if (user.LoadingStatus === 'userLoggedOut') {
+    if (user.loadingStatus === 'userLoggedOut') {
       navigate('/login');
     }
   }, [user]);
@@ -65,43 +66,34 @@ const Profile = () => {
           Профиль
         </NavLink>
         <NavLink to='/profile/orders'>История заказов</NavLink>
-        <NavLink to='/logout' onClick={handleLogout}>
+        <NavLink to='/login' onClick={handleLogout}>
           Выход
         </NavLink>
       </div>
       <form className={pagesStyles.registerForm} onSubmit={handleSubmit}>
         <EmailInput
-          type={'text'}
           placeholder={'Имя'}
           onChange={handleChange}
           value={(data && data.name) ?? ''}
           name={'name'}
-          error={false}
-          errorText={'Ошибка'}
           size={'default'}
           extraClass='mb-6'
           isIcon
         />
         <EmailInput
-          type={'email'}
           placeholder={'E-mail'}
           onChange={handleChange}
           value={(data && data.email) ?? ''}
           name={'email'}
-          error={false}
-          errorText={'Ошибка'}
           size={'default'}
           extraClass='mb-6'
           isIcon
         />
         <PasswordInput
-          type={'password'}
           placeholder={'Пароль'}
           onChange={handleChange}
           value={(data && data.password) ?? ''}
           name={'password'}
-          error={false}
-          errorText={'Ошибка'}
           size={'default'}
           extraClass='mb-6'
           icon='ShowIcon'

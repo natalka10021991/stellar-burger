@@ -4,17 +4,18 @@ import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-component
 import pagesStyles from './styles.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { setNewPassword } from '../services/store/resetPassword';
+import { AppDispatch, RootState } from '../services/store/store';
 
 const ResetPassword = () => {
   const [values, setValues] = useState({
     password: '',
     token: '',
   });
-  const dispatch = useDispatch();
-  const setNewPasswordRequest = useSelector((store) => store.setNewPassword);
+  const dispatch = useDispatch<AppDispatch>();
+  const setNewPasswordRequest = useSelector((store: RootState) => store.setNewPassword);
   const navigate = useNavigate();
   const location = useLocation();
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     dispatch(setNewPassword(values));
   };

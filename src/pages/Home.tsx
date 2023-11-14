@@ -1,11 +1,11 @@
 import { useSelector } from 'react-redux';
+import { RootState } from '../services/store/store';
 import MainBlock from '../components/MainBlock/MainBlock';
 
 const Home = () => {
   const { burgerIngredients, loadingStatus, error } = useSelector(
-    (store) => store.burgerIngredients
+    (store: RootState) => store.burgerIngredients
   );
-console.log(burgerIngredients, 'burgerIngredients')
   return (
     <>
       {burgerIngredients && burgerIngredients.length && (

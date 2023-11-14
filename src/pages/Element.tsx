@@ -3,28 +3,30 @@ import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import IngredientDetails from '../components/IngredientDetails/IngredientDetails';
 import pagesStyles from './styles.module.css';
+import { IIngredient } from '../utils/types';
 
 const Element = () => {
   const [ingredient, setIngredient] = useState();
   let { id } = useParams();
-  const burgerIngredients = useSelector((store) => store.burgerIngredients);
+  const burgerIngredients = useSelector((store: any) => store.burgerIngredients);
 
 
   useEffect(() => {
     if (burgerIngredients && burgerIngredients.burgerIngredients.length) {
-      const getIngredientById = (id) => {
-        return burgerIngredients.burgerIngredients.find((ingredient) => ingredient._id === id);
+      const getIngredientById = (id: string) => {
+        return burgerIngredients.burgerIngredients.find((ingredient: IIngredient) => ingredient._id === id);
       };
-      let ingredient = getIngredientById(id);
+      let ingredient = id ? getIngredientById(id) : null;
       setIngredient(ingredient);
     }
   }, [burgerIngredients]);
+  
   return (
     <>
       {ingredient && (
         <div className={pagesStyles.ingredientWrapper}>
           <h2>Детали ингредиента</h2>
-          <IngredientDetails ingredient={ingredient} />
+          <IngredientDetails/>
         </div>
       )}
     </>

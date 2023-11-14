@@ -1,8 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { BASE_URL } from '../../routes';
+import { IResetPasswordStore } from '../../utils/types';
 import { request } from '../utils';
 
-export const resetPassword = createAsyncThunk('resetPassword', (value) => {
+export const resetPassword = createAsyncThunk('resetPassword', (value: string) => {
   return request(`${BASE_URL}/password-reset`, {
     method: 'POST',
     headers: {
@@ -15,7 +16,7 @@ export const resetPassword = createAsyncThunk('resetPassword', (value) => {
   .then(data => data.data)
 });
 
-const initialStateResetPassword = {
+const initialStateResetPassword: IResetPasswordStore = {
   loadingStatus: 'idle',
   error: null,
 };
@@ -46,7 +47,7 @@ export const resetPasswordSlice = createSlice({
   },
 });
 
-export const setNewPassword = createAsyncThunk('setNewPassword', (values) => {
+export const setNewPassword = createAsyncThunk('setNewPassword', (values: {password: string, token: string}) => {
   return request(`${BASE_URL}/password-reset/reset`, {
     method: 'POST',
     headers: {
@@ -60,7 +61,7 @@ export const setNewPassword = createAsyncThunk('setNewPassword', (values) => {
   .then(data => data)
 });
 
-const initialStateSetNewPassword = {
+const initialStateSetNewPassword: IResetPasswordStore = {
   loadingStatus: 'idle',
   error: null,
 };

@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import { BASE_URL } from '../../routes';
+import { ILoginUser, IUser, IUserStore } from '../../utils/types';
 import { checkResponse, request } from '../utils';
 
 export const refreshToken = async () => {
@@ -18,19 +19,27 @@ export const refreshToken = async () => {
   }
 };
 
-export const fetchWithRefresh = async (url, options) => {
+export const fetchWithRefresh = async (url: string, options: any) => {
   try {
     const res = await fetch(url, options);
     return await checkResponse(res);
-  } catch (err) {
+  } catch (err: any) {
     if (err.message === 'jwt expired') {
       const refreshData = await refreshToken();
       if (!refreshData.success) {
         Promise.reject(refreshData);
       }
       localStorage.setItem('refreshToken', refreshData.refreshToken);
-      localStorage.setItem('accessToken', refreshData.accessToken);
-      options.headers.Authorization = refreshData.accessToken;
+
+
+      let authToken = refreshData.accessToken;
+          authToken = authToken.split('Bearer ')[1];
+          if (authToken) {
+            // Сохраняем токен в куку token
+            localStorage.setItem('accessToken', authToken);
+          }
+
+      options.headers.Authorization = 'Bearer ' + authToken;
       const res = await fetch(url, options);
       return await checkResponse(res);
     } else {
@@ -52,7 +61,7 @@ export const getUser = createAsyncThunk('user/getUser', async () => {
   return await getUserRequest();
 });
 
-export const updateUserData = createAsyncThunk('user/updateUser', (user) => {
+export const updateUserData = createAsyncThunk('user/updateUser', (user: IUser) => {
   return request(`${BASE_URL}/auth/user`, {
     method: 'PATCH',
     headers: {
@@ -64,7 +73,7 @@ export const updateUserData = createAsyncThunk('user/updateUser', (user) => {
   .then(data => data)
 });
 
-export const loginUser = createAsyncThunk('loginUser', (user) => {
+export const loginUser = createAsyncThunk('loginUser', (user: ILoginUser) => {
   const payload = {
     email: user.email,
     password: user.password,
@@ -91,7 +100,8 @@ export const logoutUser = createAsyncThunk('logoutUser', () => {
   .then(data => data)
 });
 
-const initialState = {
+
+const initialState: IUserStore = {
   loadingStatus: 'idle',
   error: null,
   user: {
@@ -114,8 +124,8 @@ export const userSlice = createSlice({
         state.user = {
           email: '',
           name: '',
+          password: '',
         };
-        state.isUser = false;
       })
       // Вызывается в том случае если запрос успешно выполнился
       .addCase(getUser.fulfilled, (state, action) => {
@@ -124,7 +134,6 @@ export const userSlice = createSlice({
           state.loadingStatus = 'success';
           state.error = null;
           state.user = action.payload.user;
-          state.isUser = true;
         }
       })
       // Вызывается в случае ошибки
@@ -134,8 +143,8 @@ export const userSlice = createSlice({
         state.user = {
           email: '',
           name: '',
+          password: '',
         };
-        state.isUser = false;
       })
       .addCase(updateUserData.pending, (state) => {
         state.loadingStatus = 'patchingIsLoading';
@@ -143,8 +152,8 @@ export const userSlice = createSlice({
         state.user = {
           email: '',
           name: '',
+          password: '',
         };
-        state.isUser = false;
       })
       // Вызывается в том случае если запрос успешно выполнился
       .addCase(updateUserData.fulfilled, (state, action) => {
@@ -152,7 +161,6 @@ export const userSlice = createSlice({
         state.loadingStatus = 'success';
         state.error = null;
         state.user = action.payload.user;
-        state.isUser = true;
       })
       // Вызывается в случае ошибки
       .addCase(updateUserData.rejected, (state, action) => {
@@ -161,8 +169,8 @@ export const userSlice = createSlice({
         state.user = {
           email: '',
           name: '',
+          password: '',
         };
-        state.isUser = false;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         if (action.payload.success) {
@@ -188,6 +196,7 @@ export const userSlice = createSlice({
         state.user = {
           email: '',
           name: '',
+          password: '',
         };
       });
     builder
@@ -197,6 +206,7 @@ export const userSlice = createSlice({
           state.user = {
             email: '',
             name: '',
+            password: '',
           };
 
           state.loadingStatus = 'userLoggedOut';

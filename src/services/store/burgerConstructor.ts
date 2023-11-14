@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { IBurgerConstructorStore } from '../../utils/types';
 
-const initialState = {
+const initialState: IBurgerConstructorStore = {
   draggedIngredients: [],
 };
 
@@ -15,11 +16,13 @@ export const burgerConstructorSlice = createSlice({
           action.payload.ingredient,
         ];
       } else {
-        state.draggedIngredients = [...state.draggedIngredients, action.payload.ingredient]
+        state.draggedIngredients = [...state.draggedIngredients, action.payload.ingredient];
       }
     },
     removeIngredient: (state = initialState, action) => {
-      state.draggedIngredients = [...state.draggedIngredients.filter((item) => item.id !== action.payload)]
+      state.draggedIngredients = [
+        ...state.draggedIngredients.filter((item) => item.id !== action.payload),
+      ];
     },
   },
 });

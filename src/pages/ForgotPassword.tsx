@@ -6,13 +6,14 @@ import pagesStyles from './styles.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { resetPassword } from '../services/store/resetPassword';
 import { getUser } from '../services/store/user';
+import { AppDispatch, RootState } from '../services/store/store';
 
 const ForgotPassword = () => {
   const [value, setValue] = useState('');
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const resetPasswordRequest = useSelector((store) => store.resetPassword);
-  const handleSubmit = (e) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const resetPasswordRequest = useSelector((store: RootState) => store.resetPassword);
+  const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     dispatch(resetPassword(value));
   };

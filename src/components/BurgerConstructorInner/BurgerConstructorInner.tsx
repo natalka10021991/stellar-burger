@@ -6,16 +6,12 @@ import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burg
 import { removeIngredient } from '../../services/store/burgerConstructor';
 
 import burgerConstructorInnerStyles from './BurgerConstructorInner.module.css';
-import { IIngredient } from '../../utils/types';
+import { IIngredient, IIngredientDragged } from '../../utils/types';
 
 interface DragItem {
   index: number;
   id: string;
   type: string;
-}
-
-interface IIngredientDragged extends IIngredient {
-  id: string;
 }
 
 interface Props {

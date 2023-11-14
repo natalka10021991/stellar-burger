@@ -1,68 +1,67 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-
 import { BASE_URL } from '../../routes';
+import { IUser, IUserAuthenticated } from '../../utils/types';
 import { request } from '../utils';
 
-export const createOrder = createAsyncThunk('orderDetails/createOrder', (ingredients) => {
+export const registerUser = createAsyncThunk('registerUser', (user: IUser) => {
   const payload = {
-    ingredients: ingredients,
+    email: user.email,
+    password: user.password,
+    name: user.name,
   };
-
-  return request(`${BASE_URL}/orders`, {
+  return request(`${BASE_URL}/auth/register`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
     },
     body: JSON.stringify(payload),
-  })
-  .then((data) => data);
+  }).then((data) => data);
 });
 
-const initialState = {
+const initialState: IUserAuthenticated = {
   loadingStatus: 'idle',
   error: null,
-  orderDetails: {
+  isAuthenticated: false,
+  user: {
+    email: '',
     name: '',
-    order: {
-      number: '',
-    },
   },
 };
 
-export const createOrderSlice = createSlice({
-  name: 'orderDetails',
+export const registerUserSlice = createSlice({
+  name: 'user/register',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
       // Вызывается прямо перед выполнением запроса
-      .addCase(createOrder.pending, (state) => {
+      .addCase(registerUser.pending, (state) => {
         state.loadingStatus = 'loading';
         state.error = null;
-        state.orderDetails = {
+        state.isAuthenticated = false;
+        state.user = {
+          email: '',
           name: '',
-          order: {
-            number: '',
-          },
         };
       })
       // Вызывается в том случае если запрос успешно выполнился
-      .addCase(createOrder.fulfilled, (state, action) => {
+      .addCase(registerUser.fulfilled, (state, action) => {
         // Добавляем пользователя
-        state.orderDetails = action.payload;
-        state.loadingStatus = 'idle';
+        state.user = action.payload.user;
+        state.loadingStatus = 'success';
+        state.isAuthenticated = true;
         state.error = null;
       })
       // Вызывается в случае ошибки
-      .addCase(createOrder.rejected, (state, action) => {
+      .addCase(registerUser.rejected, (state, action) => {
+        console.log('error');
         state.loadingStatus = 'failed';
+        state.isAuthenticated = false;
         // https://redux-toolkit.js.org/api/createAsyncThunk#handling-thunk-errors
         state.error = action.error;
-        state.orderDetails = {
+        state.user = {
+          email: '',
           name: '',
-          order: {
-            number: '',
-          },
         };
       });
   },
