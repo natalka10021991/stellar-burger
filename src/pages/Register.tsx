@@ -1,4 +1,4 @@
-import { useState, useEffect, FormEventHandler } from 'react';
+import { useState, useEffect, FormEventHandler, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -20,7 +20,7 @@ const Register = () => {
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
-  const handleSubmit = (e: React.SyntheticEvent) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(registerUser(form));
   };

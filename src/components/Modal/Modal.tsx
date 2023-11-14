@@ -14,7 +14,7 @@ const Modal: FC<Props> = ({ title, children, closeModal }) => {
   const modalRoot = document.getElementById('modals');
 
   useEffect(() => {
-    function closeByEscape(evt: globalThis.KeyboardEvent) {
+    function closeByEscape(evt: KeyboardEvent) {
       if (evt.key === 'Escape') {
         closeModal();
       }

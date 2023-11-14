@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -13,7 +13,7 @@ const ForgotPassword = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const resetPasswordRequest = useSelector((store: RootState) => store.resetPassword);
-  const handleSubmit = (e: React.SyntheticEvent) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(resetPassword(value));
   };
@@ -39,7 +39,7 @@ const ForgotPassword = () => {
         <Input
           type={'email'}
           placeholder={'Укажите e-mail'}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setValue(e.target.value)}
           value={value}
           name={'email'}
           error={false}

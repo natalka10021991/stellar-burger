@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import { BASE_URL } from '../../routes';
-import { IOrderDetailsStore } from '../../utils/types';
+import { IIngredientDragged, IOrderDetailsStore } from '../../utils/types';
 import { request } from '../utils';
 
-export const createOrder = createAsyncThunk('orderDetails/createOrder', (ingredients) => {
+export const createOrder = createAsyncThunk('orderDetails/createOrder', (ingredients: string[]) => {
   const payload = {
     ingredients: ingredients,
   };

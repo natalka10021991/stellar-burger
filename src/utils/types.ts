@@ -57,7 +57,7 @@ export interface IBurgerIngredientsStore {
 }
 
 export interface IBurgerConstructorStore {
-  draggedIngredients: IIngredientDragged[] | [];
+  draggedIngredients: IIngredientDragged[];
 }
 export interface IResetPasswordStore {
   loadingStatus: string;

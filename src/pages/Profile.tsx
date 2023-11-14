@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, FormEvent } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
   EmailInput,
@@ -26,7 +26,7 @@ const Profile = () => {
     setDataChange(true);
     setData({ ...data, [e.target.name]: e.target.value });
   };
-  const handleSubmit = (e: React.SyntheticEvent) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(updateUserData(data));
     setDataChange(false);
