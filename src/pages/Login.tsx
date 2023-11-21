@@ -1,21 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import pagesStyles from './styles.module.css';
 import { useDispatch } from 'react-redux';
 import { getUser, loginUser } from '../services/store/user';
+import { AppDispatch } from '../services/store/store';
 const Login = () => {
   const [form, setForm] = useState({
     email: '',
     password: '',
   });
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const handleFormChange = (e) => {
+  const handleFormChange = (e: ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(loginUser(form));
   };

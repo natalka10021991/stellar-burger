@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import orderDetailsStyles from './OrderDetails.module.css';
 
 function OrderDetails() {
-  const orderDetails = useSelector((store) => store.createOrder.orderDetails);
+  const orderDetails = useSelector((store: any) => store.createOrder.orderDetails);
   return (
     <div className={orderDetailsStyles.wrapper}>
       <p className={`${orderDetailsStyles.title} text text_type_digits-large mb-8`}>{orderDetails.order.number}</p>

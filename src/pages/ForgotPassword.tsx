@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -6,13 +6,14 @@ import pagesStyles from './styles.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { resetPassword } from '../services/store/resetPassword';
 import { getUser } from '../services/store/user';
+import { AppDispatch, RootState } from '../services/store/store';
 
 const ForgotPassword = () => {
   const [value, setValue] = useState('');
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const resetPasswordRequest = useSelector((store) => store.resetPassword);
-  const handleSubmit = (e) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const resetPasswordRequest = useSelector((store: RootState) => store.resetPassword);
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(resetPassword(value));
   };
@@ -38,7 +39,7 @@ const ForgotPassword = () => {
         <Input
           type={'email'}
           placeholder={'Укажите e-mail'}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setValue(e.target.value)}
           value={value}
           name={'email'}
           error={false}

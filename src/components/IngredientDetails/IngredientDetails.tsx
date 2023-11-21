@@ -1,21 +1,27 @@
+import { FC } from 'react';
 import { useParams } from 'react-router-dom';
-import { ingredientPropTypes } from '../../utils/types';
 import { useSelector } from 'react-redux';
 import { getBurgerIngredients } from '../../services/utils';
-import ingredientDetailsStyles from './IngredientDetails.module.css';
 
-function IngredientDetails() {
+import ingredientDetailsStyles from './IngredientDetails.module.css';
+import { IIngredient } from '../../utils/types';
+
+const IngredientDetails: FC = () => {
   let { id } = useParams();
   const burgerIngredients = useSelector(getBurgerIngredients);
-  const getIngredientById = (id) => {
-    return burgerIngredients.find((ingredient) => ingredient._id === id);
+  const getIngredientById = (id: string) => {
+    return burgerIngredients.find((ingredient: IIngredient) => ingredient._id === id);
   };
-  let ingredient = getIngredientById(id);
+  let ingredient = id ? getIngredientById(id) : null;
 
   if (!ingredient) return null;
   return (
     <>
-      <img src={ingredient.image} alt={ingredient.name} className={`${ingredientDetailsStyles.img} mb-4`} />
+      <img
+        src={ingredient.image}
+        alt={ingredient.name}
+        className={`${ingredientDetailsStyles.img} mb-4`}
+      />
       <p className='text text_type_main-medium mb-8'>{ingredient.name}</p>
       <div className={ingredientDetailsStyles.info}>
         <p className={`${ingredientDetailsStyles.infoBox} text text_type_main-small`}>
@@ -41,6 +47,6 @@ function IngredientDetails() {
       </div>
     </>
   );
-}
+};
 
 export default IngredientDetails;

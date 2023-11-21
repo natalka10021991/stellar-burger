@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { BASE_URL } from '../../routes';
+import { IBurgerIngredientsStore } from '../../utils/types';
 import { request } from '../utils';
 
 export const getBurgerIngredients = createAsyncThunk('burgerIngredients/getBurgerIngredients', () => {
@@ -7,7 +8,7 @@ export const getBurgerIngredients = createAsyncThunk('burgerIngredients/getBurge
   .then(data => data.data)
 });
 
-const initialState = {
+const initialState: IBurgerIngredientsStore = {
   burgerIngredients: [],
   loadingStatus: 'idle',
   error: null,

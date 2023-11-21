@@ -10,10 +10,11 @@ import Profile from './pages/Profile';
 import { ProtectedRouteElement } from './components/ProtectedRouteElement/ProtectedRouteElement';
 import Orders from './pages/Orders';
 import Element from './pages/Element';
-import Modal from './components/Modal/Modal';
 import IngredientDetails from './components/IngredientDetails/IngredientDetails';
 import AppHeader from './components/AppHeader/AppHeader';
 import { getBurgerIngredients } from './services/store/burgerIngredients';
+import { AppDispatch } from './services/store/store';
+import Modal from './components/Modal/Modal';
 
 function App() {
   const location = useLocation();
@@ -27,7 +28,7 @@ function App() {
     }
   }, [location]);
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     dispatch(getBurgerIngredients());
   }, []);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, FC } from 'react';
 import update from 'immutability-helper';
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -7,7 +7,6 @@ import {
   CurrencyIcon,
   Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import Modal from '../Modal/Modal';
 
 import burgerConstructorStyles from './BurgerConstructor.module.css';
 import OrderDetails from '../OrderDetails/OrderDetails';
@@ -16,18 +15,29 @@ import { createOrder } from '../../services/store/orderDetails';
 import BurgerConstructorInner from '../BurgerConstructorInner/BurgerConstructorInner';
 import { getDraggedElements } from '../../services/utils';
 import { useNavigate } from 'react-router-dom';
+import { IIngredient, IIngredientDragged } from '../../utils/types';
+import { AppDispatch, RootState } from '../../services/store/store';
+import Modal from '../Modal/Modal';
 
-function BurgerConstructor({ elements, onDropHandler }) {
+interface Props {
+  elements: IIngredientDragged[] | [];
+  onDropHandler: (element: IIngredient) => void;
+}
+
+const BurgerConstructor: FC<Props> = ({ elements, onDropHandler }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [bun, setBun] = useState({});
-  const [elementsWithoutBun, setElementsWithoutBun] = useState([]);
-  const [price, setPrice] = useState(null);
+  const [bun, setBun] = useState<IIngredientDragged>();
+  const [elementsWithoutBun, setElementsWithoutBun] = useState<IIngredientDragged[]>([]);
+  const [price, setPrice] = useState<number>(0);
   const draggedElements = useSelector(getDraggedElements);
-  const orderNumber = useSelector((store) => store.createOrder.orderDetails.order.number);
-  const dispatch = useDispatch();
+  const orderNumber = useSelector(
+    (store: RootState) => store.createOrder.orderDetails.order.number
+  );
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const user = useSelector((store) => store.user);
+  const user = useSelector((store: RootState) => store.user);
   const isUserLoggedIn = user.user.email && user.user.name;
+  const isOrderButtonDisabled = !draggedElements.filter(item => item.type === 'bun').length
   const handleClick = () => {
     if (!isUserLoggedIn) {
       navigate('/login');
@@ -38,7 +48,7 @@ function BurgerConstructor({ elements, onDropHandler }) {
   };
   const [, dropTarget] = useDrop({
     accept: 'burgerIngredient',
-    drop(item) {
+    drop(item: IIngredientDragged) {
       onDropHandler(item);
     },
   });
@@ -48,8 +58,8 @@ function BurgerConstructor({ elements, onDropHandler }) {
   };
 
   const findCard = useCallback(
-    (id) => {
-      const card = elementsWithoutBun.filter((c) => `${c.id}` === id)[0];
+    (id: string) => {
+      const card = elementsWithoutBun.filter((c: IIngredientDragged) => `${c.id}` === id)[0];
       return {
         card,
         index: elementsWithoutBun.indexOf(card),
@@ -59,7 +69,7 @@ function BurgerConstructor({ elements, onDropHandler }) {
   );
 
   const moveCard = useCallback(
-    (id, atIndex) => {
+    (id: string, atIndex: number) => {
       const { card, index } = findCard(id);
       setElementsWithoutBun(
         update(elementsWithoutBun, {
@@ -76,7 +86,10 @@ function BurgerConstructor({ elements, onDropHandler }) {
   const [, drop] = useDrop(() => ({ accept: 'burgerConstructorElement' }));
 
   useEffect(() => {
-    setBun(elements.find((item) => item.type === 'bun'));
+    const element = elements.find((item) => item.type === 'bun');
+    if (element) {
+      setBun(elements.find((item) => item.type === 'bun'));
+    }
     setElementsWithoutBun(elements.filter((item) => item.type !== 'bun'));
   }, [elements]);
 
@@ -105,7 +118,7 @@ function BurgerConstructor({ elements, onDropHandler }) {
                 />
               )}
               <div className={burgerConstructorStyles.ingredients} ref={drop}>
-                {elementsWithoutBun.map((item, index) => (
+                {elementsWithoutBun.map((item: IIngredientDragged) => (
                   <BurgerConstructorInner
                     item={item}
                     key={item.id}
@@ -136,7 +149,7 @@ function BurgerConstructor({ elements, onDropHandler }) {
 
             <CurrencyIcon type='primary' />
           </div>
-          <Button htmlType='button' type='primary' size='large' onClick={handleClick}>
+          <Button htmlType='button' type='primary' size='large' onClick={handleClick} disabled={isOrderButtonDisabled}>
             Оформить заказ
           </Button>
         </div>
@@ -149,6 +162,6 @@ function BurgerConstructor({ elements, onDropHandler }) {
       )}
     </>
   );
-}
+};
 
 export default BurgerConstructor;
