@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { IBurgerConstructorStore } from '../../utils/types';
+import { IBurgerConstructorStore } from '../../types/data';
 
 const initialState: IBurgerConstructorStore = {
   draggedIngredients: [],

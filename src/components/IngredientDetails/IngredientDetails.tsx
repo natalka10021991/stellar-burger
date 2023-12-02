@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { getBurgerIngredients } from '../../services/utils';
 
 import ingredientDetailsStyles from './IngredientDetails.module.css';
-import { IIngredient } from '../../utils/types';
+import { IIngredient } from '../../types/data';
 
 const IngredientDetails: FC = () => {
   let { id } = useParams();

@@ -6,7 +6,7 @@ import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burg
 import { removeIngredient } from '../../services/store/burgerConstructor';
 
 import burgerConstructorInnerStyles from './BurgerConstructorInner.module.css';
-import { IIngredientDragged } from '../../utils/types';
+import { IIngredientDragged } from '../../types/data';
 
 interface DragItem {
   index: number;

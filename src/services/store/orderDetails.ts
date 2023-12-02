@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import { BASE_URL } from '../../routes';
-import { IIngredientDragged, IOrderDetailsStore } from '../../utils/types';
+import { IOrderDetailsStore } from '../../types/data';
 import { request } from '../utils';
 
 export const createOrder = createAsyncThunk('orderDetails/createOrder', (ingredients: string[]) => {
@@ -13,10 +13,10 @@ export const createOrder = createAsyncThunk('orderDetails/createOrder', (ingredi
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
+      Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
     },
     body: JSON.stringify(payload),
-  })
-  .then((data) => data);
+  }).then((data) => data);
 });
 
 const initialState: IOrderDetailsStore = {

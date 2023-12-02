@@ -6,7 +6,7 @@ import IngredientElement from '../IngredientElement/IngredientElement';
 import burgerIngredientsStyles from './BurgerIngredients.module.css';
 import { getBurgerIngredients } from '../../services/utils';
 import { Outlet } from 'react-router-dom';
-import { IIngredient } from '../../utils/types';
+import { IIngredient } from '../../types/data';
 
 function BurgerIngredients() {
   const [refBun, inViewBun] = useInView();

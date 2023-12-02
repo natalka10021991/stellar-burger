@@ -8,9 +8,7 @@ const Home = () => {
   );
   return (
     <>
-      {burgerIngredients && burgerIngredients.length && (
-        <MainBlock />
-      )}
+      {burgerIngredients && burgerIngredients.length && <MainBlock />}
       {loadingStatus === 'loading' && <p>Данные загружаются</p>}
       {error && <h2>Ошибна на сервере</h2>}
     </>

@@ -15,9 +15,9 @@ import { createOrder } from '../../services/store/orderDetails';
 import BurgerConstructorInner from '../BurgerConstructorInner/BurgerConstructorInner';
 import { getDraggedElements } from '../../services/utils';
 import { useNavigate } from 'react-router-dom';
-import { IIngredient, IIngredientDragged } from '../../utils/types';
 import { AppDispatch, RootState } from '../../services/store/store';
 import Modal from '../Modal/Modal';
+import { IIngredient, IIngredientDragged } from '../../types/data';
 
 interface Props {
   elements: IIngredientDragged[] | [];
@@ -37,12 +37,14 @@ const BurgerConstructor: FC<Props> = ({ elements, onDropHandler }) => {
   const navigate = useNavigate();
   const user = useSelector((store: RootState) => store.user);
   const isUserLoggedIn = user.user.email && user.user.name;
-  const isOrderButtonDisabled = !draggedElements.filter(item => item.type === 'bun').length
+  const isOrderButtonDisabled = !draggedElements.filter(
+    (item: IIngredientDragged) => item.type === 'bun'
+  ).length;
   const handleClick = () => {
     if (!isUserLoggedIn) {
       navigate('/login');
     } else {
-      dispatch(createOrder(draggedElements.map((item) => item._id)));
+      dispatch(createOrder(draggedElements.map((item: IIngredientDragged) => item._id)));
       setIsModalOpen(true);
     }
   };
@@ -95,7 +97,7 @@ const BurgerConstructor: FC<Props> = ({ elements, onDropHandler }) => {
 
   useEffect(() => {
     setPrice(
-      draggedElements.reduce((sum, current) => {
+      draggedElements.reduce((sum: any, current: any) => {
         if (current.type === 'bun') return sum + current.price * 2;
         return sum + current.price;
       }, 0)
@@ -149,7 +151,13 @@ const BurgerConstructor: FC<Props> = ({ elements, onDropHandler }) => {
 
             <CurrencyIcon type='primary' />
           </div>
-          <Button htmlType='button' type='primary' size='large' onClick={handleClick} disabled={isOrderButtonDisabled}>
+          <Button
+            htmlType='button'
+            type='primary'
+            size='large'
+            onClick={handleClick}
+            disabled={isOrderButtonDisabled}
+          >
             Оформить заказ
           </Button>
         </div>

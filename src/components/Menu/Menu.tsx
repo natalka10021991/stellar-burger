@@ -11,7 +11,7 @@ const menuItems = [
   {
     icon: 'list',
     text: 'Лента заказов',
-    link: '/orders',
+    link: '/feed',
   },
 ];
 

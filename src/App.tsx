@@ -15,6 +15,7 @@ import AppHeader from './components/AppHeader/AppHeader';
 import { getBurgerIngredients } from './services/store/burgerIngredients';
 import { AppDispatch } from './services/store/store';
 import Modal from './components/Modal/Modal';
+import FeedItem from './pages/FeedItem';
 
 function App() {
   const location = useLocation();
@@ -37,6 +38,8 @@ function App() {
     setIsOpen(false);
     navigate('/');
   };
+  // localStorage.removeItem('accessToken');
+  // localStorage.removeItem('refreshToken');
 
   return (
     <div className='app'>
@@ -44,13 +47,17 @@ function App() {
       <Routes location={state?.backgroundLocation || location}>
         <Route path='/' element={<Home />} />
         <Route path='/ingredients/:id' element={<Element />} />
-        <Route path='/orders' element={<Orders />} />
+        <Route path='/feed/:id' element={<FeedItem />} />
+        <Route path='/profile/orders/:id' element={<FeedItem />} />
+
+        <Route path='/feed' element={<Orders />} />
         <Route
           path='/login'
           element={
             <ProtectedRouteElement onlyUnAuth={true} element={<Login />}></ProtectedRouteElement>
           }
         />
+
         <Route
           path='/register'
           element={
@@ -74,7 +81,14 @@ function App() {
             <ProtectedRouteElement onlyUnAuth={false} element={<Profile />}></ProtectedRouteElement>
           }
         />
+        <Route
+          path='/profile/orders'
+          element={
+            <ProtectedRouteElement onlyUnAuth={false} element={<Profile />}></ProtectedRouteElement>
+          }
+        />
       </Routes>
+
       {state?.backgroundLocation && isOpen && (
         <Routes>
           <Route

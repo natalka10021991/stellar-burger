@@ -6,6 +6,45 @@ import { userSlice } from './user';
 import { currentIngredientSlice } from './currentIngredient';
 import { resetPasswordSlice, setNewPasswordSlice } from './resetPassword';
 import { burgerConstructorSlice } from './burgerConstructor';
+import { HistoryReducer, OrdersReducer } from '../orders/reducers';
+import { socketMiddleware } from '../middleware/socket-middleware';
+
+import {
+  connect as OrdersWsConnect,
+  disconnect as OrderWsDisconnect,
+  wsConnecting as OrdersWsConnecting,
+  wsOpen as OrdersWsOpen,
+  wsClose as OrdersWsClose,
+  wsMessage as OrdersMessage,
+  wsError as OrdersWsError,
+  connectHistory as HistoryWsConnect,
+  disconnectHistory as HistoryWsDisconnect,
+  wsConnectingHistory as HistoryWsConnecting,
+  wsOpenHistory as HistoryWsOpen,
+  wsCloseHistory as HistoryWsClose,
+  wsMessageHistory as HistoryMessage,
+  wsErrorHistory as HistoryWsError,
+} from '../orders/actions';
+
+const wsActions = {
+  wsConnect: OrdersWsConnect,
+  wsDisconnect: OrderWsDisconnect,
+  wsConnecting: OrdersWsConnecting,
+  onOpen: OrdersWsOpen,
+  onClose: OrdersWsClose,
+  onError: OrdersWsError,
+  onMessage: OrdersMessage,
+};
+
+const wsHistoryActions = {
+  wsConnect: HistoryWsConnect,
+  wsDisconnect: HistoryWsDisconnect,
+  wsConnecting: HistoryWsConnecting,
+  onOpen: HistoryWsOpen,
+  onClose: HistoryWsClose,
+  onError: HistoryWsError,
+  onMessage: HistoryMessage,
+};
 
 export const rootReducer = combineReducers({
   burgerIngredients: burgerIngredientsSlice.reducer,
@@ -16,12 +55,20 @@ export const rootReducer = combineReducers({
   currentIngredient: currentIngredientSlice.reducer,
   resetPassword: resetPasswordSlice.reducer,
   setNewPassword: setNewPasswordSlice.reducer,
+  orders: OrdersReducer,
+  history: HistoryReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
 
 export type AppDispatch = typeof store.dispatch;
 
+const ordersMiddleware = socketMiddleware(wsActions);
+
+const historyOrdersMiddleware = socketMiddleware(wsHistoryActions);
+
 export const store = configureStore({
   reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(ordersMiddleware, historyOrdersMiddleware),
 });

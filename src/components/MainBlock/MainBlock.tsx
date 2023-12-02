@@ -6,9 +6,9 @@ import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
 import { getBurgerIngredients, getDraggedElements } from '../../services/utils';
 import { addIngredient } from '../../services/store/burgerConstructor';
-import { IIngredient } from '../../utils/types';
 
 import mainBlockStyles from './MainBlock.module.css';
+import { IIngredient } from '../../types/data';
 
 function MainBlock() {
   const dispatch = useDispatch();

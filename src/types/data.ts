@@ -50,6 +50,12 @@ export interface IOrderDetailsStore {
   };
 }
 
+export interface IOrdersStore {
+  loadingStatus: string;
+  error: SerializedError | null;
+  orders: any;
+}
+
 export interface IBurgerIngredientsStore {
   loadingStatus: string;
   error: SerializedError | null;

@@ -1,0 +1,59 @@
+.wrapper {
+  border-radius: 24px;
+  background-color: #1c1c21;
+  padding: 24px;
+  max-width: 584px;
+  width: 100%;
+}
+
+.link {
+  display: block;
+  text-decoration: none;
+  color: white;
+  margin-bottom: 16px;
+}
+
+.orderHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.orderFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+}
+
+.orderIngredients {
+  display: flex;
+  margin-left: 30px;;
+}
+
+.orderIngredient {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 2px solid #4c4cff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: -30px;
+  background-color: black;
+}
+
+.orderIngredient img {
+  width: 170%;
+  height: auto;
+}
+
+.orderPrice {
+  display: flex;
+  align-items: center;
+}
+
+.orderPrice svg {
+  margin-left: 10px;
+}

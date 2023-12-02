@@ -33,7 +33,9 @@ const ResetPassword = () => {
         <Input
           type={'password'}
           placeholder={'Введите новый пароль'}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => setValues({ ...values, password: e.target.value })}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setValues({ ...values, password: e.target.value })
+          }
           value={values.password}
           name={'password'}
           error={false}
@@ -44,7 +46,9 @@ const ResetPassword = () => {
         <Input
           type={'text'}
           placeholder={'Введите код из письма'}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => setValues({ ...values, token: e.target.value })}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setValues({ ...values, token: e.target.value })
+          }
           value={values.token}
           name={'code'}
           error={false}
