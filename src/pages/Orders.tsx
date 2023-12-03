@@ -1,21 +1,21 @@
 import pagesStyles from './styles.module.css';
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../types';
 import {
   connect as connectOrders,
   disconnect as disconnectOrders,
 } from '../services/orders/actions';
 import Order from '../components/Order/Order';
+import { useDispatch, useSelector } from '../services/store/store';
+import { IOrder } from '../types/data';
 
 const url = 'wss://norma.nomoreparties.space/orders/all';
 
 const Orders = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch();
   const connect = () => dispatch(connectOrders(url));
   const disconnect = () => dispatch(disconnectOrders());
 
-  const orders = useSelector((store: RootState) => store.orders);
+  const orders = useSelector((store) => store.orders);
   useEffect(() => {
     connect();
     return () => {
@@ -28,7 +28,7 @@ const Orders = () => {
       <div className={pagesStyles.feedInner}>
         <div className={pagesStyles.feedOrders}>
           {orders.orders?.orders?.length
-            ? orders.orders.orders.map((order: any) => <Order data={order} />)
+            ? orders.orders.orders.map((order: IOrder) => <Order data={order} />)
             : 'Заказов нет'}
         </div>
 

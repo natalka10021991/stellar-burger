@@ -1,10 +1,9 @@
-import { useSelector } from 'react-redux';
-import { RootState } from '../services/store/store';
+import { useSelector } from '../services/store/store';
 import MainBlock from '../components/MainBlock/MainBlock';
 
 const Home = () => {
   const { burgerIngredients, loadingStatus, error } = useSelector(
-    (store: RootState) => store.burgerIngredients
+    (store) => store.burgerIngredients
   );
   return (
     <>

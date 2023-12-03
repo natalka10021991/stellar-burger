@@ -1,10 +1,10 @@
 import { FC } from 'react';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { getBurgerIngredients } from '../../services/utils';
 
 import ingredientDetailsStyles from './IngredientDetails.module.css';
 import { IIngredient } from '../../types/data';
+import { useSelector } from '../../services/store/store';
 
 const IngredientDetails: FC = () => {
   let { id } = useParams();

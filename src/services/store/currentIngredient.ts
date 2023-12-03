@@ -1,7 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { IIngredient } from '../../types/data';
 
-const initialState = {
-  currentIngredient: {},
+const initialState: IIngredient = {
+  _id: '',
+  name: '',
+  type: '',
+  proteins: 0,
+  fat: 0,
+  carbohydrates: 0,
+  calories: 0,
+  price: 0,
+  image: '',
+  image_mobile: '',
+  image_large: '',
 };
 
 export const currentIngredientSlice = createSlice({
@@ -9,7 +20,7 @@ export const currentIngredientSlice = createSlice({
   initialState,
   reducers: {
     setCurrentIngredient: (state = initialState, action) => {
-      state.currentIngredient = action.payload.element;
+      state = action.payload.element;
     },
   },
 });

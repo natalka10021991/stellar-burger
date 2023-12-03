@@ -3,10 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import pagesStyles from './styles.module.css';
-import { useDispatch, useSelector } from 'react-redux';
 import { registerUser } from '../services/store/auth';
 import { getUser } from '../services/store/user';
-import { AppDispatch, RootState } from '../services/store/store';
+import { useDispatch, useSelector } from '../services/store/store';
 
 const Register = () => {
   const [form, setForm] = useState({
@@ -15,8 +14,8 @@ const Register = () => {
     password: '',
   });
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
-  const user = useSelector((store: RootState) => store.registerUser);
+  const dispatch = useDispatch();
+  const user = useSelector((store) => store.registerUser);
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };

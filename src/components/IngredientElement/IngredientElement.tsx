@@ -1,8 +1,8 @@
 import { FC } from 'react';
-import { useSelector } from 'react-redux';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import ingredientElementStyle from './IngredientElement.module.css';
 import { useDrag } from 'react-dnd';
+import { useSelector } from '../../services/store/store';
 import { getDraggedElements } from '../../services/utils';
 import { Link, useLocation } from 'react-router-dom';
 import { IIngredient } from '../../types/data';

@@ -73,3 +73,21 @@ export interface IResetPasswordStore {
 export interface IUserAuthenticated extends IUserStore {
   isAuthenticated: boolean;
 }
+
+export interface IOrder {
+  ingredients: string[];
+  _id: string;
+  status: string;
+  number: number;
+  name: string;
+  price?: string | number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface IOrders {
+  success: boolean;
+  orders: IOrder[];
+  total: number;
+  totalToday: number;
+}

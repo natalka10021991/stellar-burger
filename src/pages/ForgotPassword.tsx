@@ -3,16 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import pagesStyles from './styles.module.css';
-import { useSelector, useDispatch } from 'react-redux';
 import { resetPassword } from '../services/store/resetPassword';
 import { getUser } from '../services/store/user';
-import { AppDispatch, RootState } from '../services/store/store';
+import { useDispatch, useSelector } from '../services/store/store';
 
 const ForgotPassword = () => {
   const [value, setValue] = useState('');
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
-  const resetPasswordRequest = useSelector((store: RootState) => store.resetPassword);
+  const dispatch = useDispatch();
+  const resetPasswordRequest = useSelector((store) => store.resetPassword);
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(resetPassword(value));
@@ -20,7 +19,7 @@ const ForgotPassword = () => {
 
   useEffect(() => {
     if (resetPasswordRequest.loadingStatus === 'success') {
-      navigate('/reset-password', {state: {forgotPassword: true} });
+      navigate('/reset-password', { state: { forgotPassword: true } });
     }
   }, [resetPasswordRequest]);
 

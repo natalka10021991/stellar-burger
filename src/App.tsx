@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -13,9 +12,9 @@ import Element from './pages/Element';
 import IngredientDetails from './components/IngredientDetails/IngredientDetails';
 import AppHeader from './components/AppHeader/AppHeader';
 import { getBurgerIngredients } from './services/store/burgerIngredients';
-import { AppDispatch } from './services/store/store';
 import Modal from './components/Modal/Modal';
 import FeedItem from './pages/FeedItem';
+import { useDispatch } from './services/store/store';
 
 function App() {
   const location = useLocation();
@@ -29,7 +28,7 @@ function App() {
     }
   }, [location]);
 
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getBurgerIngredients());
   }, []);
@@ -40,15 +39,22 @@ function App() {
   };
   // localStorage.removeItem('accessToken');
   // localStorage.removeItem('refreshToken');
-
   return (
     <div className='app'>
       <AppHeader />
       <Routes location={state?.backgroundLocation || location}>
         <Route path='/' element={<Home />} />
         <Route path='/ingredients/:id' element={<Element />} />
-        <Route path='/feed/:id' element={<FeedItem />} />
-        <Route path='/profile/orders/:id' element={<FeedItem />} />
+        <Route path='/feed/:id' element={<FeedItem isFeed />} />
+        <Route
+          path='/profile/orders/:id'
+          element={
+            <ProtectedRouteElement
+              onlyUnAuth={true}
+              element={<FeedItem isFeed={false} />}
+            ></ProtectedRouteElement>
+          }
+        />
 
         <Route path='/feed' element={<Orders />} />
         <Route
@@ -89,13 +95,39 @@ function App() {
         />
       </Routes>
 
-      {state?.backgroundLocation && isOpen && (
+      {state?.backgroundLocation?.pathname === '/' && isOpen && (
         <Routes>
           <Route
             path='/ingredients/:id'
             element={
               <Modal title={'Детали ингредиента'} closeModal={closeModal}>
                 <IngredientDetails />
+              </Modal>
+            }
+          />
+        </Routes>
+      )}
+
+      {state?.backgroundLocation?.pathname === '/feed' && isOpen && (
+        <Routes>
+          <Route
+            path='/feed/:id'
+            element={
+              <Modal title={'Детали заказа'} closeModal={closeModal}>
+                <FeedItem isFeed />
+              </Modal>
+            }
+          />
+        </Routes>
+      )}
+
+      {state?.backgroundLocation?.pathname === '/profile/orders' && isOpen && (
+        <Routes>
+          <Route
+            path='/profile/orders/:id'
+            element={
+              <Modal title={'Детали заказа'} closeModal={closeModal}>
+                <FeedItem isFeed={false} />
               </Modal>
             }
           />

@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import { useDispatch } from 'react-redux';
 import { useDrop, useDrag } from 'react-dnd';
 import type { Identifier } from 'dnd-core';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -7,6 +6,7 @@ import { removeIngredient } from '../../services/store/burgerConstructor';
 
 import burgerConstructorInnerStyles from './BurgerConstructorInner.module.css';
 import { IIngredientDragged } from '../../types/data';
+import { useDispatch } from '../../services/store/store';
 
 interface DragItem {
   index: number;

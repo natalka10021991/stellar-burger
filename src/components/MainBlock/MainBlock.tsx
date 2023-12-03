@@ -1,5 +1,3 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
@@ -9,6 +7,7 @@ import { addIngredient } from '../../services/store/burgerConstructor';
 
 import mainBlockStyles from './MainBlock.module.css';
 import { IIngredient } from '../../types/data';
+import { useDispatch, useSelector } from '../../services/store/store';
 
 function MainBlock() {
   const dispatch = useDispatch();

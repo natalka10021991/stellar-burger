@@ -1,31 +1,22 @@
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import pagesStyles from './styles.module.css';
-import { RootState } from '../types';
 import dayjs from 'dayjs';
+import { FC } from 'react';
+import { useSelector } from '../services/store/store';
 
-const FeedItem = () => {
-  // const [ingredient, setIngredient] = useState();
-  // let { id } = useParams();
-  // const burgerIngredients = useSelector((store: any) => store.burgerIngredients);
+interface Props {
+  isFeed: boolean;
+}
 
-  // useEffect(() => {
-  //   if (burgerIngredients && burgerIngredients.burgerIngredients.length) {
-  //     const getIngredientById = (id: string) => {
-  //       return burgerIngredients.burgerIngredients.find((ingredient: IIngredient) => ingredient._id === id);
-  //     };
-  //     let ingredient = id ? getIngredientById(id) : null;
-  //     setIngredient(ingredient);
-  //   }
-  // }, [burgerIngredients]);
-
+const FeedItem: FC<Props> = ({ isFeed }) => {
   let { id } = useParams();
-  const orders = useSelector((store: RootState) => store.orders);
-  const ingredients = useSelector((store: RootState) => store.burgerIngredients.burgerIngredients);
-
-  const order = orders.orders.orders.find((order) => order._id === id);
+  const orders = useSelector((store) =>
+    isFeed ? store.orders.orders.orders : store.history.orders.orders
+  );
+  const ingredients = useSelector((store) => store.burgerIngredients.burgerIngredients);
+  const order = orders.find((order) => order._id === id);
 
   const ingredientElement = (id: string) => {
     const currentIngredient = ingredients.find((item) => item._id === id);
@@ -46,7 +37,6 @@ const FeedItem = () => {
       </div>
     );
   };
-  console.log(order);
   return (
     <div className={pagesStyles.feedItemWrapper}>
       <p className='text text_type_digits-default mb-10'>{`#${order?.number}`}</p>
@@ -56,7 +46,9 @@ const FeedItem = () => {
       </p>
       <div className='mb-10'>
         <h3 className='text text_type_main-medium mt-15 mb-6'>Состав:</h3>
-        <div className={pagesStyles.ingredientsList}>{order?.ingredients.map((item) => ingredientElement(item))}</div>
+        <div className={pagesStyles.ingredientsList}>
+          {order?.ingredients.map((item) => ingredientElement(item))}
+        </div>
       </div>
       <div className={pagesStyles.feedItemFooter}>
         <p> {dayjs(order?.createdAt).locale('ru').format('DD MMMM, h:mm')}</p>

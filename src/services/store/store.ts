@@ -8,6 +8,11 @@ import { resetPasswordSlice, setNewPasswordSlice } from './resetPassword';
 import { burgerConstructorSlice } from './burgerConstructor';
 import { HistoryReducer, OrdersReducer } from '../orders/reducers';
 import { socketMiddleware } from '../middleware/socket-middleware';
+import {
+  TypedUseSelectorHook,
+  useDispatch as dispatchHook,
+  useSelector as SelectorHook,
+} from 'react-redux';
 
 import {
   connect as OrdersWsConnect,
@@ -25,6 +30,13 @@ import {
   wsMessageHistory as HistoryMessage,
   wsErrorHistory as HistoryWsError,
 } from '../orders/actions';
+
+export type RootState = ReturnType<typeof rootReducer>;
+
+export type AppDispatch = typeof store.dispatch;
+
+export const useDispatch = () => dispatchHook<AppDispatch>();
+export const useSelector: TypedUseSelectorHook<RootState> = SelectorHook;
 
 const wsActions = {
   wsConnect: OrdersWsConnect,
@@ -58,10 +70,6 @@ export const rootReducer = combineReducers({
   orders: OrdersReducer,
   history: HistoryReducer,
 });
-
-export type RootState = ReturnType<typeof rootReducer>;
-
-export type AppDispatch = typeof store.dispatch;
 
 const ordersMiddleware = socketMiddleware(wsActions);
 

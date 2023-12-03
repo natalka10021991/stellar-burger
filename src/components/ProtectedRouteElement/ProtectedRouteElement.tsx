@@ -1,6 +1,6 @@
 import { FC, ReactNode } from 'react';
-import { useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
+import { useSelector } from '../../services/store/store';
 
 interface Props {
   onlyUnAuth: boolean;
@@ -10,7 +10,7 @@ interface Props {
 export const ProtectedRouteElement: FC<Props> = ({ onlyUnAuth, element }) => {
   const location = useLocation();
   const user = useSelector((store: any) => store.user);
-  console.log(user, 'user')
+  console.log(user, 'user');
 
   const isAuthChecked = user.user.email && user.user.name;
   const { from } = location.state || { from: { pathname: '/' } }; //login

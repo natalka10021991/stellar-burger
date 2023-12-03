@@ -5,11 +5,10 @@ import {
   PasswordInput,
   Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDispatch, useSelector } from 'react-redux';
 
 import pagesStyles from './styles.module.css';
 import { updateUserData, logoutUser } from '../services/store/user';
-import { AppDispatch, RootState } from '../services/store/store';
+import { useDispatch, useSelector } from '../services/store/store';
 import { IUser } from '../types/data';
 import Order from '../components/Order/Order';
 import { connectHistory, disconnectHistory } from '../services/orders/actions';
@@ -24,11 +23,11 @@ const Profile = () => {
   const [activeTab, setActiveTab] = useState('profile');
   const navigate = useNavigate();
   const location = useLocation();
-  const user = useSelector((store: RootState) => store.user);
+  const user = useSelector((store) => store.user);
   const token = localStorage.getItem('accessToken');
 
   const url = `${`wss://norma.nomoreparties.space/orders`}?token=${token}`;
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch();
   const connect = () => dispatch(connectHistory(url));
   const disconnect = () => dispatch(disconnectHistory());
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,7 +45,7 @@ const Profile = () => {
     setDataChange(false);
   };
 
-  const historyOrders = useSelector((store: RootState) => store.history.orders.orders);
+  const historyOrders = useSelector((store) => store.history.orders.orders);
   useEffect(() => {
     connect();
     return () => {
@@ -81,13 +80,12 @@ const Profile = () => {
   return (
     <div className={pagesStyles.profileWrapper}>
       <div className={`${pagesStyles.profileMenu} text text_type_main-medium`}>
-        <NavLink
-          to='/profile'
-          style={activeTab === 'profile' ? {color: 'white'} : {}}
-        >
+        <NavLink to='/profile' style={activeTab === 'profile' ? { color: 'white' } : {}}>
           Профиль
         </NavLink>
-        <NavLink to='/profile/orders' style={activeTab === 'orders' ? {color: 'white'} : {}}>История заказов</NavLink>
+        <NavLink to='/profile/orders' style={activeTab === 'orders' ? { color: 'white' } : {}}>
+          История заказов
+        </NavLink>
         <NavLink to='/login' onClick={handleLogout}>
           Выход
         </NavLink>

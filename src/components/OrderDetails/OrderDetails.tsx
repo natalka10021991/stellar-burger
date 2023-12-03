@@ -1,12 +1,14 @@
 import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../services/store/store';
 import orderDetailsStyles from './OrderDetails.module.css';
 
 function OrderDetails() {
-  const orderDetails = useSelector((store: any) => store.createOrder.orderDetails);
+  const orderDetails = useSelector((store) => store.createOrder.orderDetails);
   return (
     <div className={orderDetailsStyles.wrapper}>
-      <p className={`${orderDetailsStyles.title} text text_type_digits-large mb-8`}>{orderDetails.order.number}</p>
+      <p className={`${orderDetailsStyles.title} text text_type_digits-large mb-8`}>
+        {orderDetails.order.number}
+      </p>
       <p className='text text_type_main-default mb-15'>идентификатор заказа</p>
       <div className={orderDetailsStyles.icon}>
         <CheckMarkIcon type='primary' />
