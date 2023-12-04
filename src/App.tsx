@@ -35,7 +35,7 @@ function App() {
 
   const closeModal = () => {
     setIsOpen(false);
-    navigate('/');
+    navigate(state?.backgroundLocation);
   };
   // localStorage.removeItem('accessToken');
   // localStorage.removeItem('refreshToken');
@@ -45,14 +45,11 @@ function App() {
       <Routes location={state?.backgroundLocation || location}>
         <Route path='/' element={<Home />} />
         <Route path='/ingredients/:id' element={<Element />} />
-        <Route path='/feed/:id' element={<FeedItem isFeed />} />
+        <Route path='/feed/:id' element={<FeedItem />} />
         <Route
           path='/profile/orders/:id'
           element={
-            <ProtectedRouteElement
-              onlyUnAuth={true}
-              element={<FeedItem isFeed={false} />}
-            ></ProtectedRouteElement>
+            <ProtectedRouteElement onlyUnAuth={true} element={<FeedItem />}></ProtectedRouteElement>
           }
         />
 
@@ -114,7 +111,7 @@ function App() {
             path='/feed/:id'
             element={
               <Modal title={'Детали заказа'} closeModal={closeModal}>
-                <FeedItem isFeed />
+                <FeedItem />
               </Modal>
             }
           />
@@ -127,7 +124,7 @@ function App() {
             path='/profile/orders/:id'
             element={
               <Modal title={'Детали заказа'} closeModal={closeModal}>
-                <FeedItem isFeed={false} />
+                <FeedItem />
               </Modal>
             }
           />

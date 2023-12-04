@@ -85,6 +85,12 @@ export interface IOrder {
   updatedAt: string;
 }
 
+export interface IOrderStore {
+  loadingStatus: string;
+  error: SerializedError | null;
+  order: IOrder;
+}
+
 export interface IOrders {
   success: boolean;
   orders: IOrder[];

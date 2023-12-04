@@ -42,8 +42,8 @@ const Order: FC<Props> = ({ data }) => {
         <h3 className={`text text_type_main-medium`}>{data.name}</h3>
         <div className={orderStyles.orderFooter}>
           <div className={orderStyles.orderIngredients}>
-            {data.ingredients.map((item) => (
-              <div className={orderStyles.orderIngredient}>
+            {data.ingredients.map((item, i) => (
+              <div key={i} className={orderStyles.orderIngredient}>
                 <img src={findIngredient(item)?.image} alt='' />
               </div>
             ))}

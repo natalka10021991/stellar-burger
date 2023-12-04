@@ -30,6 +30,7 @@ import {
   wsMessageHistory as HistoryMessage,
   wsErrorHistory as HistoryWsError,
 } from '../orders/actions';
+import { getOrderSlice } from './order';
 
 export type RootState = ReturnType<typeof rootReducer>;
 
@@ -67,6 +68,7 @@ export const rootReducer = combineReducers({
   currentIngredient: currentIngredientSlice.reducer,
   resetPassword: resetPasswordSlice.reducer,
   setNewPassword: setNewPasswordSlice.reducer,
+  order: getOrderSlice.reducer,
   orders: OrdersReducer,
   history: HistoryReducer,
 });

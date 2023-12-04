@@ -142,7 +142,7 @@ const Profile = () => {
       ) : (
         <div className={pagesStyles.myOrders}>
           {historyOrders.map((order) => (
-            <Order data={order} />
+            <Order key={order._id} data={order} />
           ))}
         </div>
       )}

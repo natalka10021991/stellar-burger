@@ -3,25 +3,52 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 import { useParams } from 'react-router-dom';
 import pagesStyles from './styles.module.css';
 import dayjs from 'dayjs';
-import { FC } from 'react';
-import { useSelector } from '../services/store/store';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from '../services/store/store';
+import { getOrder } from '../services/store/order';
 
-interface Props {
-  isFeed: boolean;
+interface ISortedIngredients {
+  amount: number;
+  _id: string;
 }
 
-const FeedItem: FC<Props> = ({ isFeed }) => {
+const FeedItem = () => {
+  const [sortedIngredients, setSortedIngredients] = useState<ISortedIngredients[]>([]);
   let { id } = useParams();
-  const orders = useSelector((store) =>
-    isFeed ? store.orders.orders.orders : store.history.orders.orders
-  );
+  const dispatch = useDispatch();
   const ingredients = useSelector((store) => store.burgerIngredients.burgerIngredients);
-  const order = orders.find((order) => order._id === id);
+  const order = useSelector((store) => store.order.order);
+  useEffect(() => {
+    if (id) {
+      dispatch(getOrder(id));
+    }
+  }, []);
 
-  const ingredientElement = (id: string) => {
-    const currentIngredient = ingredients.find((item) => item._id === id);
+  useEffect(() => {
+    if (order._id) {
+      let filteredIngredients: ISortedIngredients[] = [];
+      order.ingredients.forEach((ingredient) => {
+        const copy = filteredIngredients.find((item) => item._id === ingredient);
+
+        if (!copy) {
+          filteredIngredients = [...filteredIngredients, { amount: 1, _id: ingredient }];
+        } else {
+          filteredIngredients.map((item) => {
+            if (item._id === copy._id) {
+              return (item.amount = item.amount + 1);
+            }
+          });
+        }
+      });
+      setSortedIngredients(filteredIngredients);
+    }
+  }, [order]);
+
+  const ingredientElement = (ingredient: ISortedIngredients, i: number) => {
+    const currentIngredient = ingredients.find((item) => item._id === ingredient._id);
+
     return (
-      <div className='mb-4'>
+      <div className='mb-4' key={i}>
         <div className={pagesStyles.feedItemElementWrapper}>
           <div className={pagesStyles.feedItemElementInfo}>
             <img src={currentIngredient?.image} alt='' />
@@ -29,7 +56,7 @@ const FeedItem: FC<Props> = ({ isFeed }) => {
           </div>
           <div>
             <p className={`${pagesStyles.feedItemElementPrice} text text_type_digits-default`}>
-              {currentIngredient?.price}
+              {ingredient.amount} x {currentIngredient?.price}
               <CurrencyIcon type='primary' />
             </p>
           </div>
@@ -47,7 +74,7 @@ const FeedItem: FC<Props> = ({ isFeed }) => {
       <div className='mb-10'>
         <h3 className='text text_type_main-medium mt-15 mb-6'>Состав:</h3>
         <div className={pagesStyles.ingredientsList}>
-          {order?.ingredients.map((item) => ingredientElement(item))}
+          {sortedIngredients?.map((ingredient, i) => ingredientElement(ingredient, i))}
         </div>
       </div>
       <div className={pagesStyles.feedItemFooter}>

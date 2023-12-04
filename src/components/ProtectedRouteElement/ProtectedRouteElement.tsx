@@ -10,7 +10,6 @@ interface Props {
 export const ProtectedRouteElement: FC<Props> = ({ onlyUnAuth, element }) => {
   const location = useLocation();
   const user = useSelector((store: any) => store.user);
-  console.log(user, 'user');
 
   const isAuthChecked = user.user.email && user.user.name;
   const { from } = location.state || { from: { pathname: '/' } }; //login

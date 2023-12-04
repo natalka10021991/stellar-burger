@@ -28,7 +28,7 @@ const Orders = () => {
       <div className={pagesStyles.feedInner}>
         <div className={pagesStyles.feedOrders}>
           {orders.orders?.orders?.length
-            ? orders.orders.orders.map((order: IOrder) => <Order data={order} />)
+            ? orders.orders.orders.map((order: IOrder) => <Order key={order._id} data={order} />)
             : 'Заказов нет'}
         </div>
 
