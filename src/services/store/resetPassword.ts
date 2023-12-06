@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { BASE_URL } from '../../routes';
-import { IResetPasswordStore } from '../../utils/types';
+import { IResetPasswordStore } from '../../types/data';
 import { request } from '../utils';
 
 export const resetPassword = createAsyncThunk('resetPassword', (value: string) => {

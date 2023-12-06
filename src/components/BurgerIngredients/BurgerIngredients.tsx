@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { useInView } from 'react-intersection-observer';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientElement from '../IngredientElement/IngredientElement';
 import burgerIngredientsStyles from './BurgerIngredients.module.css';
 import { getBurgerIngredients } from '../../services/utils';
 import { Outlet } from 'react-router-dom';
-import { IIngredient } from '../../utils/types';
+import { IIngredient } from '../../types/data';
+import { useSelector } from '../../services/store/store';
 
 function BurgerIngredients() {
   const [refBun, inViewBun] = useInView();

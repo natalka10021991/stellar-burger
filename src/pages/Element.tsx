@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import IngredientDetails from '../components/IngredientDetails/IngredientDetails';
 import pagesStyles from './styles.module.css';
-import { IIngredient } from '../utils/types';
+import { IIngredient } from '../types/data';
+import { useSelector } from '../services/store/store';
 
 const Element = () => {
   const [ingredient, setIngredient] = useState();

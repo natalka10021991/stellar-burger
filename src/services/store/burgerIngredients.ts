@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { BASE_URL } from '../../routes';
-import { IBurgerIngredientsStore } from '../../utils/types';
+import { IBurgerIngredientsStore } from '../../types/data';
 import { request } from '../utils';
 
 export const getBurgerIngredients = createAsyncThunk('burgerIngredients/getBurgerIngredients', () => {

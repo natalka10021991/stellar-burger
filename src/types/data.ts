@@ -50,6 +50,12 @@ export interface IOrderDetailsStore {
   };
 }
 
+export interface IOrdersStore {
+  loadingStatus: string;
+  error: SerializedError | null;
+  orders: any;
+}
+
 export interface IBurgerIngredientsStore {
   loadingStatus: string;
   error: SerializedError | null;
@@ -66,4 +72,28 @@ export interface IResetPasswordStore {
 
 export interface IUserAuthenticated extends IUserStore {
   isAuthenticated: boolean;
+}
+
+export interface IOrder {
+  ingredients: string[];
+  _id: string;
+  status: string;
+  number: number;
+  name: string;
+  price?: string | number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface IOrderStore {
+  loadingStatus: string;
+  error: SerializedError | null;
+  order: IOrder;
+}
+
+export interface IOrders {
+  success: boolean;
+  orders: IOrder[];
+  total: number;
+  totalToday: number;
 }

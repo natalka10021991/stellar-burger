@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { BASE_URL } from '../../routes';
-import { IUser, IUserAuthenticated } from '../../utils/types';
+import { IUser, IUserAuthenticated } from '../../types/data';
 import { request } from '../utils';
 
 export const registerUser = createAsyncThunk('registerUser', (user: IUser) => {

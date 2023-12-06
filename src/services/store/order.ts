@@ -1,69 +1,76 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import { BASE_URL } from '../../routes';
-import { IOrderDetailsStore } from '../../types/data';
+import { IOrderStore } from '../../types/data';
 import { request } from '../utils';
 
-export const createOrder = createAsyncThunk('orderDetails/createOrder', (ingredients: string[]) => {
-  const payload = {
-    ingredients: ingredients,
-  };
-
-  return request(`${BASE_URL}/orders`, {
-    method: 'POST',
+export const getOrder = createAsyncThunk('order/getOrder', (id: string | number) => {
+  return request(`${BASE_URL}/orders/${id}`, {
+    method: 'GET',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
       Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
     },
-    body: JSON.stringify(payload),
   }).then((data) => data);
 });
 
-const initialState: IOrderDetailsStore = {
+const initialState: IOrderStore = {
   loadingStatus: 'idle',
   error: null,
-  orderDetails: {
+  order: {
+    ingredients: [''],
+    _id: '',
+    status: '',
+    number: 0,
     name: '',
-    order: {
-      number: '',
-    },
+    price: '',
+    createdAt: '',
+    updatedAt: '',
   },
 };
 
-export const createOrderSlice = createSlice({
-  name: 'orderDetails',
+export const getOrderSlice = createSlice({
+  name: 'order',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
       // Вызывается прямо перед выполнением запроса
-      .addCase(createOrder.pending, (state) => {
+      .addCase(getOrder.pending, (state) => {
         state.loadingStatus = 'loading';
         state.error = null;
-        state.orderDetails = {
+        state.order = {
+          ingredients: [''],
+          _id: '',
+          status: '',
+          number: 0,
           name: '',
-          order: {
-            number: '',
-          },
+          price: '',
+          createdAt: '',
+          updatedAt: '',
         };
       })
       // Вызывается в том случае если запрос успешно выполнился
-      .addCase(createOrder.fulfilled, (state, action) => {
+      .addCase(getOrder.fulfilled, (state, action) => {
         // Добавляем пользователя
-        state.orderDetails = action.payload;
+        state.order = action.payload.orders[0];
         state.loadingStatus = 'idle';
         state.error = null;
       })
       // Вызывается в случае ошибки
-      .addCase(createOrder.rejected, (state, action) => {
+      .addCase(getOrder.rejected, (state, action) => {
         state.loadingStatus = 'failed';
         // https://redux-toolkit.js.org/api/createAsyncThunk#handling-thunk-errors
         state.error = action.error;
-        state.orderDetails = {
+        state.order = {
+          ingredients: [''],
+          _id: '',
+          status: '',
+          number: 0,
           name: '',
-          order: {
-            number: '',
-          },
+          price: '',
+          createdAt: '',
+          updatedAt: '',
         };
       });
   },

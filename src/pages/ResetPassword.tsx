@@ -2,17 +2,16 @@ import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { useNavigate, useLocation, Navigate } from 'react-router-dom';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import pagesStyles from './styles.module.css';
-import { useDispatch, useSelector } from 'react-redux';
 import { setNewPassword } from '../services/store/resetPassword';
-import { AppDispatch, RootState } from '../services/store/store';
+import { useDispatch, useSelector } from '../services/store/store';
 
 const ResetPassword = () => {
   const [values, setValues] = useState({
     password: '',
     token: '',
   });
-  const dispatch = useDispatch<AppDispatch>();
-  const setNewPasswordRequest = useSelector((store: RootState) => store.setNewPassword);
+  const dispatch = useDispatch();
+  const setNewPasswordRequest = useSelector((store) => store.setNewPassword);
   const navigate = useNavigate();
   const location = useLocation();
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -33,7 +32,9 @@ const ResetPassword = () => {
         <Input
           type={'password'}
           placeholder={'Введите новый пароль'}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => setValues({ ...values, password: e.target.value })}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setValues({ ...values, password: e.target.value })
+          }
           value={values.password}
           name={'password'}
           error={false}
@@ -44,7 +45,9 @@ const ResetPassword = () => {
         <Input
           type={'text'}
           placeholder={'Введите код из письма'}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => setValues({ ...values, token: e.target.value })}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setValues({ ...values, token: e.target.value })
+          }
           value={values.token}
           name={'code'}
           error={false}

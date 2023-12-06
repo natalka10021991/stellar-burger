@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import { BASE_URL } from '../../routes';
-import { ILoginUser, IUser, IUserStore } from '../../utils/types';
+import { ILoginUser, IUser, IUserStore } from '../../types/data';
 import { checkResponse, request } from '../utils';
 
 export const refreshToken = async () => {
