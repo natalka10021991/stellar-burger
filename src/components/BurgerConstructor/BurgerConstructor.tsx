@@ -10,7 +10,7 @@ import {
 import burgerConstructorStyles from './BurgerConstructor.module.css';
 import OrderDetails from '../OrderDetails/OrderDetails';
 import { useDrop } from 'react-dnd';
-import { createOrder } from '../../services/store/orderDetails';
+import { createOrder } from '../../services/store/orderDetails/orderDetails';
 import BurgerConstructorInner from '../BurgerConstructorInner/BurgerConstructorInner';
 import { getDraggedElements } from '../../services/utils';
 import { useNavigate } from 'react-router-dom';
@@ -29,9 +29,7 @@ const BurgerConstructor: FC<Props> = ({ elements, onDropHandler }) => {
   const [elementsWithoutBun, setElementsWithoutBun] = useState<IIngredientDragged[]>([]);
   const [price, setPrice] = useState<number>(0);
   const draggedElements = useSelector(getDraggedElements);
-  const orderNumber = useSelector(
-    (store) => store.createOrder.orderDetails.order.number
-  );
+  const orderNumber = useSelector((store) => store.createOrder.orderDetails.order.number);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((store) => store.user);
@@ -104,19 +102,21 @@ const BurgerConstructor: FC<Props> = ({ elements, onDropHandler }) => {
   }, [draggedElements]);
   return (
     <>
-      <div className={burgerConstructorStyles.wrapper}>
-        <div className={burgerConstructorStyles.ingredientsWrapper} ref={dropTarget}>
+      <div className={burgerConstructorStyles.wrapper} ref={dropTarget} data-cy='constructor'>
+        <div className={burgerConstructorStyles.ingredientsWrapper}>
           {elements && elements.length && elementsWithoutBun ? (
             <>
               {bun && (
-                <ConstructorElement
-                  type='top'
-                  isLocked
-                  text={`${bun.name} (верх)`}
-                  price={bun.price}
-                  thumbnail={bun.image}
-                  extraClass=''
-                />
+                <div data-cy='dropped-bun'>
+                  <ConstructorElement
+                    type='top'
+                    isLocked
+                    text={`${bun.name} (верх)`}
+                    price={bun.price}
+                    thumbnail={bun.image}
+                    extraClass=''
+                  />
+                </div>
               )}
               <div className={burgerConstructorStyles.ingredients} ref={drop}>
                 {elementsWithoutBun.map((item: IIngredientDragged) => (
@@ -156,6 +156,7 @@ const BurgerConstructor: FC<Props> = ({ elements, onDropHandler }) => {
             size='large'
             onClick={handleClick}
             disabled={isOrderButtonDisabled}
+            data-cy='order-button'
           >
             Оформить заказ
           </Button>
@@ -164,7 +165,9 @@ const BurgerConstructor: FC<Props> = ({ elements, onDropHandler }) => {
 
       {isModalOpen && !!orderNumber && (
         <Modal title='' closeModal={closeModal}>
-          <OrderDetails />
+          <div data-cy='order-modal'>
+            <OrderDetails />
+          </div>
         </Modal>
       )}
     </>

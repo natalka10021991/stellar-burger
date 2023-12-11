@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { useDrop, useDrag } from 'react-dnd';
 import type { Identifier } from 'dnd-core';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { removeIngredient } from '../../services/store/burgerConstructor';
+import { removeIngredient } from '../../services/store/burgerConstructor/burgerConstructor';
 
 import burgerConstructorInnerStyles from './BurgerConstructorInner.module.css';
 import { IIngredientDragged } from '../../types/data';
@@ -69,6 +69,7 @@ const BurgerConstructorInner: FC<Props> = ({ item, id, moveCard, findCard }) => 
       key={item.id}
       ref={(node) => drag(drop(node))}
       style={{ opacity }}
+      data-cy='dropped-el'
     >
       <DragIcon type='primary' />
       <ConstructorElement

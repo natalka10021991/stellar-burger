@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import pagesStyles from './styles.module.css';
-import { getUser, loginUser } from '../services/store/user';
+import { getUser, loginUser } from '../services/store/user/user';
 import { useDispatch } from '../services/store/store';
 const Login = () => {
   const [form, setForm] = useState({
@@ -20,7 +20,7 @@ const Login = () => {
     dispatch(loginUser(form));
   };
   const token = localStorage.getItem('accessToken');
- 
+
   useEffect(() => {
     if (!!token) {
       dispatch(getUser());

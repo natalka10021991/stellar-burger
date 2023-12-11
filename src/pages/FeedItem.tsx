@@ -5,7 +5,7 @@ import pagesStyles from './styles.module.css';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from '../services/store/store';
-import { getOrder } from '../services/store/order';
+import { getOrder } from '../services/store/order/order';
 
 interface ISortedIngredients {
   amount: number;
@@ -25,7 +25,7 @@ const FeedItem = () => {
   }, []);
 
   useEffect(() => {
-    if (order._id) {
+    if (order?._id) {
       let filteredIngredients: ISortedIngredients[] = [];
       order.ingredients.forEach((ingredient) => {
         const copy = filteredIngredients.find((item) => item._id === ingredient);

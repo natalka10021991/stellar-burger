@@ -3,7 +3,10 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
 import { getBurgerIngredients, getDraggedElements } from '../../services/utils';
-import { addIngredient } from '../../services/store/burgerConstructor';
+import {
+  addIngredient,
+  replaceIngredient,
+} from '../../services/store/burgerConstructor/burgerConstructor';
 
 import mainBlockStyles from './MainBlock.module.css';
 import { IIngredient } from '../../types/data';
@@ -15,12 +18,21 @@ function MainBlock() {
   const draggedElements = useSelector(getDraggedElements);
 
   const handleDrop = (element: IIngredient) => {
-    dispatch(
-      addIngredient({
-        ingredient: { ...element, id: Math.random() },
-        ingredients: burgerIngredients,
-      })
-    );
+    if (element.type === 'bun') {
+      dispatch(
+        replaceIngredient({
+          ingredient: { ...element, id: Math.random() },
+          ingredients: burgerIngredients,
+        })
+      );
+    } else {
+      dispatch(
+        addIngredient({
+          ingredient: { ...element, id: Math.random() },
+          ingredients: burgerIngredients,
+        })
+      );
+    }
   };
 
   return (

@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import pagesStyles from './styles.module.css';
-import { resetPassword } from '../services/store/resetPassword';
-import { getUser } from '../services/store/user';
+import { resetPassword } from '../services/store/resetPassword/resetPassword';
+import { getUser } from '../services/store/user/user';
 import { useDispatch, useSelector } from '../services/store/store';
 
 const ForgotPassword = () => {

@@ -7,7 +7,7 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import pagesStyles from './styles.module.css';
-import { updateUserData, logoutUser } from '../services/store/user';
+import { updateUserData, logoutUser } from '../services/store/user/user';
 import { useDispatch, useSelector } from '../services/store/store';
 import { IUser } from '../types/data';
 import Order from '../components/Order/Order';

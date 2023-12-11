@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { BASE_URL } from '../../routes';
-import { IUser, IUserAuthenticated } from '../../types/data';
-import { request } from '../utils';
+import { BASE_URL } from '../../../routes';
+import { IUser, IUserAuthenticated } from '../../../types/data';
+import { request } from '../../utils';
 
 export const registerUser = createAsyncThunk('registerUser', (user: IUser) => {
   const payload = {
@@ -48,7 +48,7 @@ export const registerUserSlice = createSlice({
       .addCase(registerUser.fulfilled, (state, action) => {
         // Добавляем пользователя
         state.user = action.payload.user;
-        state.loadingStatus = 'success';
+        state.loadingStatus = 'resolved';
         state.isAuthenticated = true;
         state.error = null;
       })

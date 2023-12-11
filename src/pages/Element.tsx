@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import IngredientDetails from '../components/IngredientDetails/IngredientDetails';
 import pagesStyles from './styles.module.css';
 import { IIngredient } from '../types/data';
-import { useSelector } from '../services/store/store';
+import { useSelector } from 'react-redux';
 
 const Element = () => {
   const [ingredient, setIngredient] = useState();
