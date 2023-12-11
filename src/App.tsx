@@ -11,7 +11,7 @@ import Orders from './pages/Orders';
 import Element from './pages/Element';
 import IngredientDetails from './components/IngredientDetails/IngredientDetails';
 import AppHeader from './components/AppHeader/AppHeader';
-import { getBurgerIngredients } from './services/store/burgerIngredients';
+import { getBurgerIngredients } from './services/store/burgerIngredients/burgerIngredients';
 import Modal from './components/Modal/Modal';
 import FeedItem from './pages/FeedItem';
 import { useDispatch } from './services/store/store';
@@ -98,7 +98,9 @@ function App() {
             path='/ingredients/:id'
             element={
               <Modal title={'Детали ингредиента'} closeModal={closeModal}>
-                <IngredientDetails />
+                <div data-cy='modal-ingredients'>
+                  <IngredientDetails />
+                </div>
               </Modal>
             }
           />
@@ -124,7 +126,9 @@ function App() {
             path='/profile/orders/:id'
             element={
               <Modal title={'Детали заказа'} closeModal={closeModal}>
-                <FeedItem />
+                <div>
+                  <FeedItem />
+                </div>
               </Modal>
             }
           />

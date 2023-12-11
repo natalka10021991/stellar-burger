@@ -30,7 +30,7 @@ const Modal: FC<Props> = ({ title, children, closeModal }) => {
       <div className={modalStyles.modal} onClick={(e) => e.stopPropagation()}>
         <header className={modalStyles.header}>
           <h2 className='text text_type_main-medium'>{title}</h2>
-          <button className={modalStyles.closeButton} onClick={closeModal}>
+          <button className={modalStyles.closeButton} onClick={closeModal} data-cy='modal-close'>
             <CloseIcon type='primary' />
           </button>
         </header>

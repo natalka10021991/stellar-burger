@@ -2,7 +2,7 @@ import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { useNavigate, useLocation, Navigate } from 'react-router-dom';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import pagesStyles from './styles.module.css';
-import { setNewPassword } from '../services/store/resetPassword';
+import { setNewPassword } from '../services/store/resetPassword/resetPassword';
 import { useDispatch, useSelector } from '../services/store/store';
 
 const ResetPassword = () => {

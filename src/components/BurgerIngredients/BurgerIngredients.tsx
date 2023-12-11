@@ -44,7 +44,11 @@ function BurgerIngredients() {
           <h2 className={burgerIngredientsStyles.title}>Булки</h2>
           <div className={burgerIngredientsStyles.ingredientsWrapper} ref={refBun}>
             {getType('bun').map((item: IIngredient) => {
-              return <IngredientElement data={item} key={item._id} />;
+              return (
+                <div data-cy='ingredients'>
+                  <IngredientElement data={item} key={item._id} />
+                </div>
+              );
             })}
           </div>
         </div>
@@ -53,7 +57,11 @@ function BurgerIngredients() {
           <h2 className={burgerIngredientsStyles.title}>Соусы</h2>
           <div className={burgerIngredientsStyles.ingredientsWrapper} ref={refSauce}>
             {getType('sauce').map((item: IIngredient) => {
-              return <IngredientElement data={item} key={item._id} />;
+              return (
+                <div data-cy='ingredients'>
+                  <IngredientElement data={item} key={item._id} />
+                </div>
+              );
             })}
           </div>
         </div>
@@ -62,7 +70,11 @@ function BurgerIngredients() {
           <h2 className={burgerIngredientsStyles.title}>Начинки</h2>
           <div className={burgerIngredientsStyles.ingredientsWrapper} ref={refMain}>
             {getType('main').map((item: IIngredient) => {
-              return <IngredientElement data={item} key={item._id} />;
+              return (
+                <div data-cy='ingredients'>
+                  <IngredientElement data={item} key={item._id} />
+                </div>
+              );
             })}
           </div>
         </div>

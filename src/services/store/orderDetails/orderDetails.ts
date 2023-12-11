@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { BASE_URL } from '../../routes';
-import { IOrderDetailsStore } from '../../types/data';
-import { request } from '../utils';
+import { BASE_URL } from '../../../routes';
+import { IOrderDetailsStore } from '../../../types/data';
+import { request } from '../../utils';
 
 export const createOrder = createAsyncThunk('orderDetails/createOrder', (ingredients: string[]) => {
   const payload = {
@@ -51,12 +51,12 @@ export const createOrderSlice = createSlice({
       .addCase(createOrder.fulfilled, (state, action) => {
         // Добавляем пользователя
         state.orderDetails = action.payload;
-        state.loadingStatus = 'idle';
+        state.loadingStatus = 'resolved';
         state.error = null;
       })
       // Вызывается в случае ошибки
       .addCase(createOrder.rejected, (state, action) => {
-        state.loadingStatus = 'failed';
+        state.loadingStatus = 'rejected';
         // https://redux-toolkit.js.org/api/createAsyncThunk#handling-thunk-errors
         state.error = action.error;
         state.orderDetails = {

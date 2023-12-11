@@ -1,11 +1,10 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { burgerIngredientsSlice } from './burgerIngredients';
-import { createOrderSlice } from './orderDetails';
-import { registerUserSlice } from './auth';
-import { userSlice } from './user';
-import { currentIngredientSlice } from './currentIngredient';
-import { resetPasswordSlice, setNewPasswordSlice } from './resetPassword';
-import { burgerConstructorSlice } from './burgerConstructor';
+import { burgerIngredientsSlice } from './burgerIngredients/burgerIngredients';
+import { createOrderSlice } from './orderDetails/orderDetails';
+import { registerUserSlice } from './auth/auth';
+import { userSlice } from './user/user';
+import { resetPasswordSlice, setNewPasswordSlice } from './resetPassword/resetPassword';
+import { burgerConstructorSlice } from './burgerConstructor/burgerConstructor';
 import { HistoryReducer, OrdersReducer } from '../orders/reducers';
 import { socketMiddleware } from '../middleware/socket-middleware';
 import {
@@ -30,7 +29,7 @@ import {
   wsMessageHistory as HistoryMessage,
   wsErrorHistory as HistoryWsError,
 } from '../orders/actions';
-import { getOrderSlice } from './order';
+import { getOrderSlice } from './order/order';
 
 export type RootState = ReturnType<typeof rootReducer>;
 
@@ -65,7 +64,6 @@ export const rootReducer = combineReducers({
   createOrder: createOrderSlice.reducer,
   registerUser: registerUserSlice.reducer,
   user: userSlice.reducer,
-  currentIngredient: currentIngredientSlice.reducer,
   resetPassword: resetPasswordSlice.reducer,
   setNewPassword: setNewPasswordSlice.reducer,
   order: getOrderSlice.reducer,

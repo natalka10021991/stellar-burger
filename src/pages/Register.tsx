@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import pagesStyles from './styles.module.css';
-import { registerUser } from '../services/store/auth';
-import { getUser } from '../services/store/user';
+import { registerUser } from '../services/store/auth/auth';
+import { getUser } from '../services/store/user/user';
 import { useDispatch, useSelector } from '../services/store/store';
 
 const Register = () => {

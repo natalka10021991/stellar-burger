@@ -13,7 +13,7 @@ export const ProtectedRouteElement: FC<Props> = ({ onlyUnAuth, element }) => {
 
   const isAuthChecked = user.user.email && user.user.name;
   const { from } = location.state || { from: { pathname: '/' } }; //login
-  if (user.loadingStatus === 'patchingIsLoading' || user.loadingStatus === 'gettingDataIsLoading')
+  if (user.loadingStatus === 'patchingIsLoading' || user.loadingStatus === 'loading')
     return <div>Updating...</div>;
 
   if (!onlyUnAuth && !isAuthChecked) {

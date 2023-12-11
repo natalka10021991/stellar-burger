@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { BASE_URL } from '../../routes';
-import { IOrderStore } from '../../types/data';
-import { request } from '../utils';
+import { BASE_URL } from '../../../routes';
+import { IOrderStore } from '../../../types/data';
+import { request } from '../../utils';
 
 export const getOrder = createAsyncThunk('order/getOrder', (id: string | number) => {
   return request(`${BASE_URL}/orders/${id}`, {
@@ -54,7 +54,7 @@ export const getOrderSlice = createSlice({
       .addCase(getOrder.fulfilled, (state, action) => {
         // Добавляем пользователя
         state.order = action.payload.orders[0];
-        state.loadingStatus = 'idle';
+        state.loadingStatus = 'resolved';
         state.error = null;
       })
       // Вызывается в случае ошибки

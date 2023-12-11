@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { BASE_URL } from '../../routes';
-import { ILoginUser, IUser, IUserStore } from '../../types/data';
-import { checkResponse, request } from '../utils';
+import { BASE_URL } from '../../../routes';
+import { ILoginUser, IUser, IUserStore } from '../../../types/data';
+import { checkResponse, request } from '../../utils';
 
 export const refreshToken = async () => {
   try {
@@ -31,13 +31,12 @@ export const fetchWithRefresh = async (url: string, options: any) => {
       }
       localStorage.setItem('refreshToken', refreshData.refreshToken);
 
-
       let authToken = refreshData.accessToken;
-          authToken = authToken.split('Bearer ')[1];
-          if (authToken) {
-            // Сохраняем токен в куку token
-            localStorage.setItem('accessToken', authToken);
-          }
+      authToken = authToken.split('Bearer ')[1];
+      if (authToken) {
+        // Сохраняем токен в куку token
+        localStorage.setItem('accessToken', authToken);
+      }
 
       options.headers.Authorization = 'Bearer ' + authToken;
       const res = await fetch(url, options);
@@ -69,8 +68,7 @@ export const updateUserData = createAsyncThunk('user/updateUser', (user: IUser) 
       Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
     },
     body: JSON.stringify(user),
-  })
-  .then(data => data)
+  }).then((data) => data);
 });
 
 export const loginUser = createAsyncThunk('loginUser', (user: ILoginUser) => {
@@ -84,8 +82,7 @@ export const loginUser = createAsyncThunk('loginUser', (user: ILoginUser) => {
       'Content-Type': 'application/json;charset=utf-8',
     },
     body: JSON.stringify(payload),
-  })
-  .then(data => data)
+  }).then((data) => data);
 });
 
 export const logoutUser = createAsyncThunk('logoutUser', () => {
@@ -96,10 +93,8 @@ export const logoutUser = createAsyncThunk('logoutUser', () => {
       'Content-Type': 'application/json;charset=utf-8',
     },
     body: JSON.stringify({ token: token }),
-  })
-  .then(data => data)
+  }).then((data) => data);
 });
-
 
 const initialState: IUserStore = {
   loadingStatus: 'idle',
@@ -119,7 +114,7 @@ export const userSlice = createSlice({
     builder
       // Вызывается прямо перед выполнением запроса
       .addCase(getUser.pending, (state) => {
-        state.loadingStatus = 'gettingDataIsLoading';
+        state.loadingStatus = 'loading';
         state.error = null;
         state.user = {
           email: '',
@@ -129,12 +124,10 @@ export const userSlice = createSlice({
       })
       // Вызывается в том случае если запрос успешно выполнился
       .addCase(getUser.fulfilled, (state, action) => {
-        if (action?.payload?.success) {
-          // Добавляем пользователя
-          state.loadingStatus = 'success';
-          state.error = null;
-          state.user = action.payload.user;
-        }
+        // Добавляем пользователя
+        state.loadingStatus = 'resolved';
+        state.error = null;
+        state.user = action.payload.user;
       })
       // Вызывается в случае ошибки
       .addCase(getUser.rejected, (state, action) => {
@@ -158,7 +151,7 @@ export const userSlice = createSlice({
       // Вызывается в том случае если запрос успешно выполнился
       .addCase(updateUserData.fulfilled, (state, action) => {
         // Добавляем пользователя
-        state.loadingStatus = 'success';
+        state.loadingStatus = 'resolved';
         state.error = null;
         state.user = action.payload.user;
       })
@@ -201,22 +194,20 @@ export const userSlice = createSlice({
       });
     builder
       .addCase(logoutUser.fulfilled, (state, action) => {
-        if (action.payload.success) {
-          // Добавляем пользователя
-          state.user = {
-            email: '',
-            name: '',
-            password: '',
-          };
+        state.user = {
+          email: '',
+          name: '',
+          password: '',
+        };
 
-          state.loadingStatus = 'userLoggedOut';
-          state.error = null;
-          localStorage.removeItem('accessToken');
-          localStorage.removeItem('refreshToken');
-        }
+        state.loadingStatus = 'userLoggedOut';
+        state.error = null;
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
       })
       .addCase(logoutUser.rejected, (state, action) => {
         state.error = action.error;
+        state.loadingStatus = 'failed';
       });
   },
 });
